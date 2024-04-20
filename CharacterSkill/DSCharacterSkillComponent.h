@@ -42,4 +42,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill)
 	float CoolTime;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UNiagaraComponent> SkillEffect;
 };

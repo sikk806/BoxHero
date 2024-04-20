@@ -18,5 +18,6 @@ public:
 	UDSWhirlWind();
 
 	virtual void BeginPlay() override;
+
 	
 };

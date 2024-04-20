@@ -32,9 +32,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UDSWhirlWind> WhirlWind;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill, Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UNiagaraComponent> SkillEffect;
-
 	FTimerHandle DestroyTimer;
 
 	// Damage Collision

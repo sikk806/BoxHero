@@ -17,14 +17,6 @@ AWhirlWind::AWhirlWind()
 
 	WhirlWind = CreateDefaultSubobject<UDSWhirlWind>(TEXT("WhirlWindComponent"));
 
-	SkillEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("SkillEffect"));
-	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> SkillEffectRef(TEXT("/Script/Niagara.NiagaraSystem'/Game/DarkSorcery/Character/Skills/WhirlWind/NS_Warrior_Spin.NS_Warrior_Spin'"));
-	if (SkillEffectRef.Object)
-	{
-		SkillEffect->SetAsset(SkillEffectRef.Object);
-	}
-	SkillEffect->SetupAttachment(RootComponent);
-
 	CheckTime = 0.f;
 	UseMana = WhirlWind->Mana;
 }
@@ -34,7 +26,6 @@ void AWhirlWind::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SkillEffect->SetActive(true);
 	GetWorldTimerManager().SetTimer(DestroyTimer, this, &AWhirlWind::DestroyActor, 2.24f);
 }
 

@@ -14,7 +14,7 @@ UDSSkillManager::UDSSkillManager()
 	MaxMp = 100.f;
 	SetMp(MaxMp);
 
-	static ConstructorHelpers::FClassFinder<AWhirlWind> WhirlWindClassRef(TEXT("/Script/CoreUObject.Class'/Script/DarkSorcery.WhirlWind'"));
+	static ConstructorHelpers::FClassFinder<AWhirlWind> WhirlWindClassRef(TEXT("/Script/Engine.Blueprint'/Game/DarkSorcery/Character/Skills/WhirlWind/WhirlWind.WhirlWind'"));
 	if (WhirlWindClassRef.Class)
 	{
 		WhirlWindClass = WhirlWindClassRef.Class;
