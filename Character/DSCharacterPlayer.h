@@ -8,6 +8,7 @@
 #include "Interface/DSComboWarpingInterface.h"
 #include "Interface/DSCutMontageInterface.h"
 #include "Interface/DSWeaponCollisionInterface.h"
+#include "Interface/DSCharacterHUDInterface.h"
 #include "InputActionValue.h"
 #include "DSCharacterPlayer.generated.h"
 
@@ -15,7 +16,7 @@
  *
  */
 UCLASS()
-class DARKSORCERY_API ADSCharacterPlayer : public ADSCharacterBase, public IDSComboWarpingInterface, public IDSCutMontageInterface, public IDSWeaponCollisionInterface
+class DARKSORCERY_API ADSCharacterPlayer : public ADSCharacterBase, public IDSComboWarpingInterface, public IDSCutMontageInterface, public IDSWeaponCollisionInterface, public IDSCharacterHUDInterface
 {
 	GENERATED_BODY()
 
@@ -138,4 +139,5 @@ protected:
 	TObjectPtr<class UDSWidgetComponent> MpBar;
 
 	virtual void SetCharacterWidget(class UDSUserWidget *InUserWidget) override;
+	virtual void SetupHUDWidget(class UDSHUDWidget* InHUDWidget) override;
 };

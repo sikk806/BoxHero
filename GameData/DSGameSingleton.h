@@ -22,12 +22,13 @@ public:
 
 	// Character Skill Data Section
 public:
-	FORCEINLINE TPair<FName, FDSCharacterSkillData> GetCharacterSkillData(int32 SkillNo) const { return CharacterSkillTable.IsValidIndex(SkillNo) ? CharacterSkillTable[SkillNo] : TPair<FName, FDSCharacterSkillData>(); }
-	//FORCEINLINE FDSCharacterSkillData GetCharacterSkillData(FName SkillName) const { return CharacterSkillTable.Contains(SkillName) ? CharacterSkillTable[SkillName] : FDSCharacterSkillData(); }
+	//FORCEINLINE TPair<FName, FDSCharacterSkillData> GetCharacterSkillData(int32 SkillNo) const { return CharacterSkillTable.IsValidIndex(SkillNo) ? CharacterSkillTable[SkillNo] : TPair<FName, FDSCharacterSkillData>(); }
+	FORCEINLINE FDSCharacterSkillData GetCharacterSkillData(FName SkillName) const { return CharacterSkillTable.Contains(SkillName) ? CharacterSkillTable[SkillName] : FDSCharacterSkillData(); }
 	
 	UPROPERTY()
 	int32 TotalCharacterSkills;
 
 private:
-	TArray<TPair<FName, FDSCharacterSkillData>> CharacterSkillTable;
+	//TArray<TPair<FName, FDSCharacterSkillData>> CharacterSkillTable;
+	TMap<FName, FDSCharacterSkillData> CharacterSkillTable;
 };

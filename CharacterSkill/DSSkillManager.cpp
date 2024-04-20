@@ -14,18 +14,18 @@ UDSSkillManager::UDSSkillManager()
 	MaxMp = 100.f;
 	SetMp(MaxMp);
 
-	static ConstructorHelpers::FClassFinder<AWhirlWind> WhirlWindClassRef(TEXT("/Script/Engine.Blueprint'/Game/DarkSorcery/Character/Skills/WhirlWind/WhirlWind.WhirlWind'"));
-	if (WhirlWindClassRef.Class)
+	static ConstructorHelpers::FObjectFinder<UBlueprint> WhirlWindRef(TEXT("/Game/DarkSorcery/Character/Skills/WhirlWind/WhirlWind.WhirlWind"));
+	if (WhirlWindRef.Object)
 	{
-		WhirlWindClass = WhirlWindClassRef.Class;
+		WhirlWind = WhirlWindRef.Object;
 	}
+
+	bWantsInitializeComponent = true;
 }
 
-// Called when the game starts
-void UDSSkillManager::BeginPlay()
+void UDSSkillManager::InitializeComponent()
 {
-	Super::BeginPlay();
-
+	SetMp(MaxMp);
 	NowMp = MaxMp;
 }
 
@@ -49,8 +49,6 @@ void UDSSkillManager::SetMp(float NewMp)
 void UDSSkillManager::ActivateSkill(FVector PlayerLocation, FRotator PlayerRotation)
 {
 	// DSMeleeSkillComponent need To Follow the Character (Ex. WhirlWind)
-	//AWhirlWind *Skill;
-	//float UseMana = Skill->WhirlWind->Mana;
 	AWhirlWind *Skill = GetWorld()->SpawnActor<AWhirlWind>(AWhirlWind::StaticClass(), PlayerLocation, PlayerRotation);
 	if (Skill)
 	{

@@ -14,21 +14,22 @@ UDSWhirlWind::UDSWhirlWind()
 	{
 		SkillEffect->SetAsset(SkillEffectRef.Object);
 	}
+
+	SkillName = FName(TEXT("WhirlWind"));
 }
 
 void UDSWhirlWind::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Skill = UDSGameSingleton::Get().GetCharacterSkillData(0);
+	Skill = UDSGameSingleton::Get().GetCharacterSkillData(SkillName);
 
-	SkillName = Skill.Key;
-	SkillDescription = Skill.Value.Description;
-	Mana = Skill.Value.Mana;
-	Stamina = Skill.Value.Stamina;
-	Damage = Skill.Value.Damage;
-	HitCount = Skill.Value.HitCount;
-	CoolTime = Skill.Value.CoolTime;
+	SkillDescription = Skill.Description;
+	Mana = Skill.Mana;
+	Stamina = Skill.Stamina;
+	Damage = Skill.Damage;
+	HitCount = Skill.HitCount;
+	CoolTime = Skill.CoolTime;
 
 	SkillEffect->SetActive(true);
 }

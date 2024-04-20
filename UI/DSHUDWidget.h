@@ -7,7 +7,7 @@
 #include "DSHUDWidget.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class DARKSORCERY_API UDSHUDWidget : public UUserWidget
@@ -15,9 +15,22 @@ class DARKSORCERY_API UDSHUDWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	//UDSHUDWidget(const FObjectInitializer& ObjectInitializer);
+	UDSHUDWidget(const FObjectInitializer &ObjectInitializer);
 
 protected:
-	//virtual void NativeConstruct() override;
-	
+	virtual void NativeConstruct() override;
+
+public:
+	void SettingHUD(float SetMaxHp);
+	void UpdateHpBar(float NewCurrentHp);
+	void UpdateMpBar(float NewCurrentMp);
+
+protected:
+	UPROPERTY()
+	TObjectPtr<class UDSHpBarWidget> HpBar;
+
+	UPROPERTY()
+	TObjectPtr<class UDSMpBarWidget> MpBar;
+
+	float MaxHp;
 };

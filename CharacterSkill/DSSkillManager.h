@@ -18,8 +18,7 @@ public:
 	UDSSkillManager();
 
 protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
+	virtual void InitializeComponent() override;
 
 public:
 	// Called every frame
@@ -54,11 +53,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill)
 	AActor *SkillActor;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = HUD) 
-	TSubclassOf<class AWhirlWind> WhirlWindClass;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill)
-	TObjectPtr<class AWhirlWind> WhirlWind;
+	TObjectPtr<class UBlueprint> WhirlWind;
 
 	
 };

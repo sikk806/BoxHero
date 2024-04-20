@@ -12,23 +12,12 @@ UDSGameSingleton::UDSGameSingleton()
         const UDataTable *DataTable = DataTableRef.Object;
         check(DataTable->GetRowMap().Num() > 0);
 
-        TArray<uint8 *> ValueArray;
-        DataTable->GetRowMap().GenerateValueArray(ValueArray);
+        const TMap<FName, uint8 *> &ValueMap = DataTable->GetRowMap();
 
-        TArray<FName> KeyArray;
-        DataTable->GetRowMap().GenerateKeyArray(KeyArray);
-
-        TArray<TPair<FName, uint8*>> PairArray;
-        for(int i = 0; i < KeyArray.Num(); i++)
-        {
-            TPair<FName, uint8*> Zipped(KeyArray[i], ValueArray[i]);
-            PairArray.Add(Zipped);
-        }
-
-        Algo::Transform(PairArray, CharacterSkillTable,
-                        [](TPair<FName, uint8*> MakePair)
+        Algo::Transform(ValueMap, CharacterSkillTable,
+                        [](const TPair<FName, uint8 *> &Pair)
                         {
-                            return TPair<FName, FDSCharacterSkillData>(MakePair.Key, *reinterpret_cast<FDSCharacterSkillData*>(MakePair.Value));
+                            return TPair<FName, FDSCharacterSkillData>(Pair.Key, *reinterpret_cast<FDSCharacterSkillData *>(Pair.Value));
                         });
     }
 

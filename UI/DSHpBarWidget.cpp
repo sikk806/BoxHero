@@ -36,14 +36,14 @@ void UDSHpBarWidget::UpdateHpBar(float NewCurrentHp)
     {
         HpProgressBar->SetPercent(NewCurrentHp / MaxHp);
     }
-    if(HpInfo)
-    {
-        int iCurrentHp = FMath::CeilToInt(NewCurrentHp);
-        int iMaxHp = FMath::CeilToInt(MaxHp);
+    // if(HpInfo)
+    // {
+    //     int iCurrentHp = FMath::CeilToInt(NewCurrentHp);
+    //     int iMaxHp = FMath::CeilToInt(MaxHp);
 
-        FString HealthInfo = FString::Printf(TEXT("%d / %d"), iCurrentHp, iMaxHp);
+    //     FString HealthInfo = FString::Printf(TEXT("%d / %d"), iCurrentHp, iMaxHp);
         
-        FText HealthText = FText::FromString(HealthInfo);
-        HpInfo->SetText(HealthText);
-    }
+    //     FText HealthText = FText::FromString(HealthInfo);
+    //     HpInfo->SetText(HealthText);
+    // }
 }

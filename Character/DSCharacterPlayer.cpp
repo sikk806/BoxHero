@@ -4,6 +4,8 @@
 #include "Character/DSComboActionData.h"
 #include "CharacterSkill/DSSkillManager.h"
 #include "Character/DSCharacterEnemy.h"
+#include "CharacterStat/DSCharacterStatComponent.h"
+#include "UI/DSHUDWidget.h"
 #include "UI/DSMpBarWidget.h"
 
 #include "Camera/CameraComponent.h"
@@ -130,7 +132,7 @@ ADSCharacterPlayer::ADSCharacterPlayer()
 
     // Particle Section
     static ConstructorHelpers::FObjectFinder<UParticleSystem> WeaponParticleRef(TEXT("/Script/Engine.ParticleSystem'/Game/DarkSorcery/Character/Effects/Attack/P_Skill_Leap_Base_Charge_Weapon.P_Skill_Leap_Base_Charge_Weapon'"));
-    if(WeaponParticleRef.Object)
+    if (WeaponParticleRef.Object)
     {
         WeaponParticle = WeaponParticleRef.Object;
     }
@@ -334,13 +336,23 @@ void ADSCharacterPlayer::SetCharacterWidget(UDSUserWidget *InUserWidget)
 {
     Super::SetCharacterWidget(InUserWidget);
 
-	UDSMpBarWidget *MpBarWidget = Cast<UDSMpBarWidget>(InUserWidget);
-	if (MpBarWidget)
-	{
-		MpBarWidget->SetMaxMp(SkillManager->GetMaxMp());
-		MpBarWidget->UpdateMpBar(SkillManager->GetNowMp());
-		//Stat->OnHpChanged.AddUObject(HpBarWidget, &UDSHpBarWidget::UpdateHpBar);
-	}
+    UDSMpBarWidget *MpBarWidget = Cast<UDSMpBarWidget>(InUserWidget);
+    if (MpBarWidget)
+    {
+        MpBarWidget->SetMaxMp(SkillManager->GetMaxMp());
+        MpBarWidget->UpdateMpBar(SkillManager->GetNowMp());
+    }
+}
+
+void ADSCharacterPlayer::SetupHUDWidget(UDSHUDWidget *InHUDWidget)
+{
+    if (InHUDWidget)
+    {
+        InHUDWidget->SettingHUD(Stat->GetMaxHp());
+        InHUDWidget->UpdateHpBar(Stat->GetNowHp());
+
+        Stat->OnHpChanged.AddUObject(InHUDWidget, &UDSHUDWidget::UpdateHpBar);
+    }
 }
 
 void ADSCharacterPlayer::Attack()

@@ -20,7 +20,7 @@ public:
 
 	// Skill Info.
 public:
-	TPair<FName, FDSCharacterSkillData> Skill;
+	FDSCharacterSkillData Skill;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill)
 	FName SkillName;
