@@ -7,11 +7,18 @@
 #include "DSSkillWidget.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class DARKSORCERY_API UDSSkillWidget : public UDSUserWidget
 {
 	GENERATED_BODY()
-	
+
+protected:
+	virtual void NativeConstruct() override;
+
+protected:
+	TObjectPtr<class UImage> SkillThumbNail;
+
+
 };

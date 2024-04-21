@@ -18,7 +18,7 @@ void UDSMpBarWidget::NativeConstruct()
     ensure(MpProgressBar);
     
     MpInfo = Cast<UTextBlock>(GetWidgetFromName(TEXT("TxtMpInfo")));
-    //ensure(HpInfo);
+    ensure(MpInfo);
 
     IDSCharacterWidgetInterface* CharacterWidget = Cast<IDSCharacterWidgetInterface>(OwningActor);
     if(CharacterWidget)

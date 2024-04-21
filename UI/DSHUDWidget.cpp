@@ -5,6 +5,7 @@
 #include "Interface/DSCharacterHUDInterface.h"
 #include "UI/DSHpBarWidget.h"
 #include "UI/DSMpBarWidget.h"
+#include "UI/DSSkillWidget.h"
 #include "DSHUDWidget.h"
 
 UDSHUDWidget::UDSHUDWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)

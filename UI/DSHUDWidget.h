@@ -22,6 +22,9 @@ protected:
 
 public:
 	void SettingHUD(float SetMaxHp, float SetMaxMp);
+
+	// Character Stat
+public:
 	void UpdateHpBar(float NewCurrentHp);
 	void UpdateMpBar(float NewCurrentMp);
 
@@ -34,4 +37,12 @@ protected:
 
 	float MaxHp;
 	float MaxMp;
+
+	// Character Skill
+public:
+	
+protected:
+	UPROPERTY()
+	TObjectPtr<class UDSSkillWidget> Skill;
+
 };
