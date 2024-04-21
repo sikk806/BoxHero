@@ -20,27 +20,28 @@ void UDSHUDWidget::NativeConstruct()
     ensure(HpBar);
 
     MpBar = Cast<UDSMpBarWidget>(GetWidgetFromName(TEXT("WidgetMpBar")));
-    //ensure(MpBar);
+    ensure(MpBar);
 
     IDSCharacterHUDInterface* HUDPawn = Cast<IDSCharacterHUDInterface>(GetOwningPlayerPawn());
     if(HUDPawn)
     {
         HUDPawn->SetupHUDWidget(this);
     }
-    ensure(MaxHp > 0);
-    HpBar->SetMaxHp(MaxHp);
 
 }
 
-void UDSHUDWidget::SettingHUD(float SetMaxHp)
+void UDSHUDWidget::SettingHUD(float SetMaxHp, float SetMaxMp)
 {
     MaxHp = SetMaxHp;
+    MaxMp = SetMaxMp;
     HpBar->SetMaxHp(MaxHp);
+    MpBar->SetMaxMp(MaxMp);
 }
 
 void UDSHUDWidget::UpdateHpBar(float NewCurrentHp)
 {
     HpBar->UpdateHpBar(NewCurrentHp);
+    HpBar->UpdateHpBarTxt(NewCurrentHp);
 }
 
 void UDSHUDWidget::UpdateMpBar(float NewCurrentMp)

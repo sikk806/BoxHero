@@ -5,6 +5,7 @@
 #include "CharacterSkill/DSSkillManager.h"
 #include "Character/DSCharacterEnemy.h"
 #include "CharacterStat/DSCharacterStatComponent.h"
+#include "GameData/DSGameSingleton.h"
 #include "UI/DSHUDWidget.h"
 #include "UI/DSMpBarWidget.h"
 
@@ -294,12 +295,18 @@ void ADSCharacterPlayer::ComboCheck()
 
 void ADSCharacterPlayer::ActivateSkill()
 {
-    SkillManager->ActivateSkill(GetActorLocation(), GetActorRotation());
-    UAnimInstance *AnimInstance = GetMesh()->GetAnimInstance();
-    if (AnimInstance && SkillMontage)
+    FDSCharacterSkillData Skill = UDSGameSingleton::Get().GetCharacterSkillData(TEXT("WhirlWind"));
+    float UseMana = Skill.Mana;
+    if (UseMana != 0.f && SkillManager->GetNowMp() >= UseMana)
     {
-        AnimInstance->Montage_Play(SkillMontage, 4.f);
-        AnimInstance->Montage_JumpToSection(FName("WhirlWind"), SkillMontage);
+        SkillManager->SetMp(UseMana);
+        SkillManager->ActivateSkill(GetActorLocation(), GetActorRotation());
+        UAnimInstance *AnimInstance = GetMesh()->GetAnimInstance();
+        if (AnimInstance && SkillMontage)
+        {
+            AnimInstance->Montage_Play(SkillMontage, 4.f);
+            AnimInstance->Montage_JumpToSection(FName("WhirlWind"), SkillMontage);
+        }
     }
 }
 
@@ -348,10 +355,12 @@ void ADSCharacterPlayer::SetupHUDWidget(UDSHUDWidget *InHUDWidget)
 {
     if (InHUDWidget)
     {
-        InHUDWidget->SettingHUD(Stat->GetMaxHp());
+        InHUDWidget->SettingHUD(Stat->GetMaxHp(), SkillManager->GetMaxMp());
         InHUDWidget->UpdateHpBar(Stat->GetNowHp());
+        InHUDWidget->UpdateMpBar(SkillManager->GetNowMp());
 
         Stat->OnHpChanged.AddUObject(InHUDWidget, &UDSHUDWidget::UpdateHpBar);
+        SkillManager->OnMpChanged.AddUObject(InHUDWidget, &UDSHUDWidget::UpdateMpBar);
     }
 }
 

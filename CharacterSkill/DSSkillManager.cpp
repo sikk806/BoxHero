@@ -12,7 +12,6 @@ UDSSkillManager::UDSSkillManager()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	MaxMp = 100.f;
-	SetMp(MaxMp);
 
 	static ConstructorHelpers::FObjectFinder<UBlueprint> WhirlWindRef(TEXT("/Game/DarkSorcery/Character/Skills/WhirlWind/WhirlWind.WhirlWind"));
 	if (WhirlWindRef.Object)
@@ -42,8 +41,8 @@ void UDSSkillManager::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 void UDSSkillManager::SetMp(float NewMp)
 {
-	NowMp = FMath::Clamp<float>(NowMp - NewMp, 0, MaxMp);
-	OnMpChanged.Broadcast(NewMp);
+	NowMp -= NewMp;
+	OnMpChanged.Broadcast(NowMp);
 }
 
 void UDSSkillManager::ActivateSkill(FVector PlayerLocation, FRotator PlayerRotation)

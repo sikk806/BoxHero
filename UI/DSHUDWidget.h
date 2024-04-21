@@ -21,7 +21,7 @@ protected:
 	virtual void NativeConstruct() override;
 
 public:
-	void SettingHUD(float SetMaxHp);
+	void SettingHUD(float SetMaxHp, float SetMaxMp);
 	void UpdateHpBar(float NewCurrentHp);
 	void UpdateMpBar(float NewCurrentMp);
 
@@ -33,4 +33,5 @@ protected:
 	TObjectPtr<class UDSMpBarWidget> MpBar;
 
 	float MaxHp;
+	float MaxMp;
 };

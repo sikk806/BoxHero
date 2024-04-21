@@ -1,11 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "UI/DSHpBarWidget.h"
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
-
-
+#include "DSHpBarWidget.h"
 
 UDSHpBarWidget::UDSHpBarWidget(const FObjectInitializer &ObjectInitializer)
 {
@@ -18,12 +16,12 @@ void UDSHpBarWidget::NativeConstruct()
 
     HpProgressBar = Cast<UProgressBar>(GetWidgetFromName(TEXT("PbHpBar")));
     ensure(HpProgressBar);
-    
-    HpInfo = Cast<UTextBlock>(GetWidgetFromName(TEXT("TxtHpInfo")));
-    //ensure(HpInfo);
 
-    IDSCharacterWidgetInterface* CharacterWidget = Cast<IDSCharacterWidgetInterface>(OwningActor);
-    if(CharacterWidget)
+    HpInfo = Cast<UTextBlock>(GetWidgetFromName(TEXT("TxtHpInfo")));
+    ensure(HpInfo);
+
+    IDSCharacterWidgetInterface *CharacterWidget = Cast<IDSCharacterWidgetInterface>(OwningActor);
+    if (CharacterWidget)
     {
         CharacterWidget->SetCharacterWidget(this);
     }
@@ -32,18 +30,22 @@ void UDSHpBarWidget::NativeConstruct()
 void UDSHpBarWidget::UpdateHpBar(float NewCurrentHp)
 {
     ensure(MaxHp > 0.f);
-    if(HpProgressBar)
+    if (HpProgressBar)
     {
         HpProgressBar->SetPercent(NewCurrentHp / MaxHp);
     }
-    // if(HpInfo)
-    // {
-    //     int iCurrentHp = FMath::CeilToInt(NewCurrentHp);
-    //     int iMaxHp = FMath::CeilToInt(MaxHp);
+}
 
-    //     FString HealthInfo = FString::Printf(TEXT("%d / %d"), iCurrentHp, iMaxHp);
-        
-    //     FText HealthText = FText::FromString(HealthInfo);
-    //     HpInfo->SetText(HealthText);
-    // }
+void UDSHpBarWidget::UpdateHpBarTxt(float NewCurrentHp)
+{
+    if(HpInfo)
+    {
+        int iCurrentHp = FMath::CeilToInt(NewCurrentHp);
+        int iMaxHp = FMath::CeilToInt(MaxHp);
+
+        FString HealthInfo = FString::Printf(TEXT("%d / %d"), iCurrentHp, iMaxHp);
+
+        FText HealthText = FText::FromString(HealthInfo);
+        HpInfo->SetText(HealthText);
+    }
 }

@@ -31,6 +31,8 @@ public:
 public:
 	FORCEINLINE float GetMaxMp() { return MaxMp; }
 	FORCEINLINE float GetNowMp() { return NowMp; }
+	
+	void SetMp(float UseMp);
 
 protected:
 	UPROPERTY(VisibleInstanceOnly, Category = Stat)
@@ -38,8 +40,6 @@ protected:
 
 	UPROPERTY(Transient, VisibleInstanceOnly, Category = Stat)
 	float NowMp;
-
-	void SetMp(float UseMp);
 
 	// Skills
 public:
