@@ -12,7 +12,7 @@ struct FDSCharacterSkillData : public FTableRowBase
 
 public:
     //Mana : ManaCost, Stamina : StaminaCost, Damage, HitCount : how many times attack, CoolTime, Description
-    FDSCharacterSkillData() : Mana(0.f), Stamina(0.f), Damage(0.f), HitCount(0), CoolTime(0.f), Description(FText::FromString(TEXT(""))) {}
+    FDSCharacterSkillData() : Mana(0.f), Stamina(0.f), Damage(0.f), HitCount(0), CoolTime(0.f), Description(FText::FromString(TEXT(""))), Thumbnail(FText::FromString(TEXT(""))) {}
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stat)
     float Mana;
@@ -32,6 +32,8 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stat)
     FText Description;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Stat)
+    FText Thumbnail;
 
 
 };

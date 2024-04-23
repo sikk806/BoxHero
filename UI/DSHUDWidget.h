@@ -35,14 +35,13 @@ protected:
 	UPROPERTY()
 	TObjectPtr<class UDSMpBarWidget> MpBar;
 
+
 	float MaxHp;
 	float MaxMp;
 
 	// Character Skill
 public:
-	
 protected:
 	UPROPERTY()
 	TObjectPtr<class UDSSkillWidget> Skill;
-
 };

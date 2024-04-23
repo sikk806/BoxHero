@@ -5,6 +5,7 @@
 #include "Interface/DSCharacterHUDInterface.h"
 #include "UI/DSHpBarWidget.h"
 #include "UI/DSMpBarWidget.h"
+#include "UI/DSSlotWidget.h"
 #include "UI/DSSkillWidget.h"
 #include "DSHUDWidget.h"
 
@@ -22,6 +23,9 @@ void UDSHUDWidget::NativeConstruct()
 
     MpBar = Cast<UDSMpBarWidget>(GetWidgetFromName(TEXT("WidgetMpBar")));
     ensure(MpBar);
+
+    Skill = Cast<UDSSkillWidget>(GetWidgetFromName(TEXT("WidgetSkill")));
+    ensure(Skill);
 
     IDSCharacterHUDInterface* HUDPawn = Cast<IDSCharacterHUDInterface>(GetOwningPlayerPawn());
     if(HUDPawn)

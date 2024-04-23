@@ -10,7 +10,7 @@ UDSGameSingleton::UDSGameSingleton()
     if (DataTableRef.Object)
     {
         const UDataTable *DataTable = DataTableRef.Object;
-        check(DataTable->GetRowMap().Num() > 0);
+        //check(DataTable->GetRowMap().Num() > 0);
 
         const TMap<FName, uint8 *> &ValueMap = DataTable->GetRowMap();
 

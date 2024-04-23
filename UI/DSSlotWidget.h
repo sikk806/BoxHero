@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "UI/DSUserWidget.h"
+#include "GameData/DSCharacterSkillData.h"
 #include "DSSlotWidget.generated.h"
 
 /**
@@ -31,6 +32,27 @@ protected:
 	virtual void NativeConstruct() override;
 
 public:
+	void SetSlotData();
+	void SetSlotType(ESlotType Type);
+	void SetThumbnail(FText ThumbnailLink);
+	void SetText(FText TextSlotInfo);
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = "true"))
+	FName SlotName;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
-	int SlotNum;
+	int Count;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
+	TEnumAsByte<ESlotType> SlotType;
+
+	UPROPERTY()
+	TObjectPtr<class UOverlay> SlotOverlay;
+
+	UPROPERTY()
+	TObjectPtr<class UImage> Thumbnail;
+
+	UPROPERTY()
+	TObjectPtr<class UTextBlock> SlotInfo;
 };

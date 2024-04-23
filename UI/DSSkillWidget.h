@@ -18,7 +18,7 @@ protected:
 	virtual void NativeConstruct() override;
 
 protected:
-	TObjectPtr<class UImage> SkillThumbNail;
+	TArray<UWidget*> Slots;
 
 
 };

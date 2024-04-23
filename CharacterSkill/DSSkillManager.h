@@ -8,6 +8,17 @@
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnMpChangedDelegate, float);
 
+struct FQuickSlotSkill
+{
+	FName SkillName;
+	float Mana;
+	float Damage;
+	float CoolTime;
+
+	FQuickSlotSkill() : SkillName(""), Mana(0.f), Damage(0.f), CoolTime(0.f) {}
+
+};
+
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class DARKSORCERY_API UDSSkillManager : public UActorComponent
 {
@@ -55,6 +66,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill)
 	TObjectPtr<class UBlueprint> WhirlWind;
+
+	// For QuickSlot
+	TArray<FQuickSlotSkill> QuickSlotSkills;
 
 	
 };
