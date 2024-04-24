@@ -5,6 +5,7 @@
 #include "GameData/DSGameSingleton.h"
 
 #include "Framework/Application/SlateApplication.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Components/Overlay.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
@@ -28,6 +29,13 @@ void UDSSlotWidget::NativeConstruct()
     SlotInfo = Cast<UTextBlock>(GetWidgetFromName("TxtSlot"));
     ensure(SlotInfo);
 
+}
+
+void UDSSlotWidget::NativeOnDragDetected(const FGeometry &InGeometry, const FPointerEvent &InMouseEvent, UDragDropOperation *&OutOperation)
+{
+    Super::NativeOnDragDetected(InGeometry, InMouseEvent, OutOperation);
+
+    UE_LOG(LogTemp, Warning, TEXT("Drag"));
 }
 
 void UDSSlotWidget::SetSlotData()
@@ -72,7 +80,18 @@ FReply UDSSlotWidget::NativeOnMouseButtonDown(const FGeometry &InGeometry, const
 
     if(InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton) == true)
     {
-        UE_LOG(LogTemp, Warning, TEXT("%s!!"), *OwningPlayer->Check);
+        // RightMousebutton
+    }
+    else if(InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton) == true)
+    {
+        switch(SlotType)
+        {
+            case SLOT_Skill : 
+            {
+                Reply = UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton);
+                
+            }
+        }
     }
 
 

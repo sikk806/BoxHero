@@ -31,6 +31,7 @@ public:
 
 protected:
 	virtual void NativeConstruct() override;
+	virtual void NativeOnDragDetected( const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation ) override;
 
 public:
 	void SetSlotData();
