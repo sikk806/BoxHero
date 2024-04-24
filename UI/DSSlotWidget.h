@@ -28,6 +28,7 @@ class DARKSORCERY_API UDSSlotWidget : public UDSUserWidget
 public:
 	UDSSlotWidget(const FObjectInitializer &ObjectInitializer);
 
+
 protected:
 	virtual void NativeConstruct() override;
 
@@ -55,4 +56,7 @@ public:
 
 	UPROPERTY()
 	TObjectPtr<class UTextBlock> SlotInfo;
+
+protected:
+	virtual FReply NativeOnMouseButtonDown( const FGeometry& InGeometry, const FPointerEvent& InMouseEvent ) override;
 };

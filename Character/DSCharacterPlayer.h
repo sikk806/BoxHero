@@ -22,6 +22,7 @@ class DARKSORCERY_API ADSCharacterPlayer : public ADSCharacterBase, public IDSCo
 
 public:
 	ADSCharacterPlayer();
+	FString Check = FString("Check Connecting The MainPlayer");
 
 protected:
 	virtual void BeginPlay() override;
@@ -135,9 +136,6 @@ protected:
 
 	// UI Section
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Widget, Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UDSWidgetComponent> MpBar;
-
 	virtual void SetCharacterWidget(class UDSUserWidget *InUserWidget) override;
 	virtual void SetupHUDWidget(class UDSHUDWidget* InHUDWidget) override;
 };

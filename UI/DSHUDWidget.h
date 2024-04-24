@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Character/DSCharacterPlayer.h"
 #include "DSHUDWidget.generated.h"
 
 /**
@@ -25,16 +26,18 @@ public:
 
 	// Character Stat
 public:
+	FORCEINLINE void SetPlayer(ADSCharacterPlayer* NewPlayer) { OwningPlayer = NewPlayer; }
 	void UpdateHpBar(float NewCurrentHp);
 	void UpdateMpBar(float NewCurrentMp);
 
 protected:
+	TObjectPtr<ADSCharacterPlayer> OwningPlayer;
+
 	UPROPERTY()
 	TObjectPtr<class UDSHpBarWidget> HpBar;
 
 	UPROPERTY()
 	TObjectPtr<class UDSMpBarWidget> MpBar;
-
 
 	float MaxHp;
 	float MaxMp;

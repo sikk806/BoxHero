@@ -3,9 +3,44 @@
 #include "UI/DSSkillWidget.h"
 #include "UI/DSSlotWidget.h"
 #include "Blueprint/WidgetTree.h"
+#include "Character/DSCharacterPlayer.h"
+#include "DSSkillWidget.h"
 
 void UDSSkillWidget::NativeConstruct()
 {
+    // TArray<UWidget *> GetWidget;
+    // if (!WidgetTree)
+    // {
+    //     UE_LOG(LogTemp, Warning, TEXT("Widget Tree is null!"));
+    // }
+    // else
+    // {
+    //     WidgetTree->GetAllWidgets(GetWidget);
+
+    //     for (auto widget : GetWidget)
+    //     {
+    //         UDSSlotWidget *SetSlot = Cast<UDSSlotWidget>(widget);
+    //         if (!SetSlot)
+    //             continue;
+
+    //         SetSlot->SetSlotType(ESlotType::SLOT_Skill);
+    //         SetSlot->SetSlotData();
+    //         break;
+    //     }
+    // }
+}
+
+void UDSSkillWidget::SetOwningPlayer(ADSCharacterPlayer *NewPlayer)
+{
+    OwningPlayer = NewPlayer;
+}
+
+void UDSSkillWidget::Init(ADSCharacterPlayer* NewPlayer)
+{
+    if(NewPlayer)
+    {
+        SetOwningPlayer(NewPlayer);
+    }
     TArray<UWidget *> GetWidget;
     if (!WidgetTree)
     {
@@ -20,9 +55,11 @@ void UDSSkillWidget::NativeConstruct()
             UDSSlotWidget *SetSlot = Cast<UDSSlotWidget>(widget);
             if (!SetSlot)
                 continue;
-
-            // After Add the SetSlot to Slots Array. And Control them.
-            SetSlot->SetOwningActor(this->OwningActor);
+            if(OwningPlayer)
+            {
+                UE_LOG(LogTemp, Warning, TEXT("This : %s"), *OwningPlayer->GetName());
+                SetSlot->SetOwningPlayer(OwningPlayer);
+            }
             SetSlot->SetSlotType(ESlotType::SLOT_Skill);
             SetSlot->SetSlotData();
             break;

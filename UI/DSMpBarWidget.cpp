@@ -25,6 +25,7 @@ void UDSMpBarWidget::NativeConstruct()
     {
         CharacterWidget->SetCharacterWidget(this);
     }
+
 }
 
 void UDSMpBarWidget::UpdateMpBar(float NewCurrentMp)

@@ -4,6 +4,7 @@
 #include "UI/DSSlotWidget.h"
 #include "GameData/DSGameSingleton.h"
 
+#include "Framework/Application/SlateApplication.h"
 #include "Components/Overlay.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
@@ -11,7 +12,7 @@
 
 UDSSlotWidget::UDSSlotWidget(const FObjectInitializer &ObjectInitializer) : Super(ObjectInitializer)
 {
-    
+
 }
 
 void UDSSlotWidget::NativeConstruct()
@@ -62,4 +63,18 @@ void UDSSlotWidget::SetThumbnail(FText ThumbnailLink)
 void UDSSlotWidget::SetText(FText TextSlotInfo)
 {
     SlotInfo->SetText(TextSlotInfo);
+}
+
+FReply UDSSlotWidget::NativeOnMouseButtonDown(const FGeometry &InGeometry, const FPointerEvent &InMouseEvent)
+{
+    FEventReply Reply;
+    Reply.NativeReply = Super::NativeOnMouseButtonDown(InGeometry, InMouseEvent);
+
+    if(InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton) == true)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("%s!!"), *OwningPlayer->Check);
+    }
+
+
+    return Reply.NativeReply;
 }

@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "UI/DSHUDWidget.h"
 #include "Interface/DSCharacterHUDInterface.h"
 #include "UI/DSHpBarWidget.h"
@@ -9,14 +8,14 @@
 #include "UI/DSSkillWidget.h"
 #include "DSHUDWidget.h"
 
-UDSHUDWidget::UDSHUDWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
+UDSHUDWidget::UDSHUDWidget(const FObjectInitializer &ObjectInitializer) : Super(ObjectInitializer)
 {
     MaxHp = -1.f;
 }
 
 void UDSHUDWidget::NativeConstruct()
 {
-    Super::NativeConstruct();   
+    Super::NativeConstruct();
 
     HpBar = Cast<UDSHpBarWidget>(GetWidgetFromName(TEXT("WidgetHpBar")));
     ensure(HpBar);
@@ -27,20 +26,25 @@ void UDSHUDWidget::NativeConstruct()
     Skill = Cast<UDSSkillWidget>(GetWidgetFromName(TEXT("WidgetSkill")));
     ensure(Skill);
 
-    IDSCharacterHUDInterface* HUDPawn = Cast<IDSCharacterHUDInterface>(GetOwningPlayerPawn());
-    if(HUDPawn)
+    IDSCharacterHUDInterface *HUDPawn = Cast<IDSCharacterHUDInterface>(GetOwningPlayerPawn());
+    if (HUDPawn)
     {
         HUDPawn->SetupHUDWidget(this);
     }
-
 }
 
 void UDSHUDWidget::SettingHUD(float SetMaxHp, float SetMaxMp)
 {
     MaxHp = SetMaxHp;
-    MaxMp = SetMaxMp;
     HpBar->SetMaxHp(MaxHp);
+
+    MaxMp = SetMaxMp;
     MpBar->SetMaxMp(MaxMp);
+
+    Skill->Init(OwningPlayer);
+
+    
+
 }
 
 void UDSHUDWidget::UpdateHpBar(float NewCurrentHp)
