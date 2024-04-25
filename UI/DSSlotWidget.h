@@ -31,7 +31,6 @@ public:
 
 protected:
 	virtual void NativeConstruct() override;
-	virtual void NativeOnDragDetected( const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation ) override;
 
 public:
 	void SetSlotData();
@@ -56,8 +55,16 @@ public:
 	TObjectPtr<class UImage> Thumbnail;
 
 	UPROPERTY()
+	TObjectPtr<class UTexture2D> ThumbnailTexture;
+
+	UPROPERTY()
 	TObjectPtr<class UTextBlock> SlotInfo;
 
+	UPROPERTY()
+	TSubclassOf<class UDSSlotWidget> DragVisualSlot;
+
+// Drag The Slot
 protected:
 	virtual FReply NativeOnMouseButtonDown( const FGeometry& InGeometry, const FPointerEvent& InMouseEvent ) override;
+	virtual void NativeOnDragDetected( const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation ) override;
 };

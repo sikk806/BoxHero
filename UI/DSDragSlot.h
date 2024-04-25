@@ -21,6 +21,9 @@ public:
 	FName SlotName;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
+	UTexture2D* SlotTexture;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
 	TEnumAsByte<ESlotType> SlotType;
 	
 };
