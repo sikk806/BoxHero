@@ -9,6 +9,7 @@
 #include "Interface/DSCutMontageInterface.h"
 #include "Interface/DSWeaponCollisionInterface.h"
 #include "Interface/DSCharacterHUDInterface.h"
+#include "Interface/DSQuickSlotInfoInterface.h"
 #include "InputActionValue.h"
 #include "DSCharacterPlayer.generated.h"
 
@@ -16,7 +17,7 @@
  *
  */
 UCLASS()
-class DARKSORCERY_API ADSCharacterPlayer : public ADSCharacterBase, public IDSComboWarpingInterface, public IDSCutMontageInterface, public IDSWeaponCollisionInterface, public IDSCharacterHUDInterface
+class DARKSORCERY_API ADSCharacterPlayer : public ADSCharacterBase, public IDSComboWarpingInterface, public IDSCutMontageInterface, public IDSWeaponCollisionInterface, public IDSCharacterHUDInterface, public IDSQuickSlotInfoInterface
 {
 	GENERATED_BODY()
 
@@ -60,6 +61,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"));
 	TObjectPtr<class UInputAction> SkillAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"));
+	TObjectPtr<class UInputAction> SkillWidget;
 
 	void Move(const FInputActionValue &Value);
 	void Look(const FInputActionValue &Value);
@@ -136,6 +140,12 @@ protected:
 
 	// UI Section
 protected:
+	UPROPERTY()
+	TObjectPtr<class UDSHUDWidget> HUDWidget;
+
 	virtual void SetCharacterWidget(class UDSUserWidget *InUserWidget) override;
 	virtual void SetupHUDWidget(class UDSHUDWidget* InHUDWidget) override;
+	virtual void SetQuickSlotInfo() override;
+
+	void CharacterSkillWidget();
 };

@@ -4,7 +4,6 @@
 #include "UI/DSSlotWidget.h"
 #include "Blueprint/WidgetTree.h"
 #include "Character/DSCharacterPlayer.h"
-#include "DSSkillWidget.h"
 
 void UDSSkillWidget::NativeConstruct()
 {
@@ -30,11 +29,6 @@ void UDSSkillWidget::NativeConstruct()
     // }
 }
 
-void UDSSkillWidget::SetOwningPlayer(ADSCharacterPlayer *NewPlayer)
-{
-    OwningPlayer = NewPlayer;
-}
-
 void UDSSkillWidget::Init(ADSCharacterPlayer* NewPlayer)
 {
     if(NewPlayer)
@@ -57,7 +51,6 @@ void UDSSkillWidget::Init(ADSCharacterPlayer* NewPlayer)
                 continue;
             if(OwningPlayer)
             {
-                UE_LOG(LogTemp, Warning, TEXT("This : %s"), *OwningPlayer->GetName());
                 SetSlot->SetOwningPlayer(OwningPlayer);
             }
             SetSlot->SetSlotType(ESlotType::SLOT_Skill);

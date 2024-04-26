@@ -35,36 +35,37 @@ protected:
 public:
 	void SetSlotData();
 	void SetSlotType(ESlotType Type);
-	void SetThumbnail(FText ThumbnailLink);
+	void SetThumbnail();
 	void SetText(FText TextSlotInfo);
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = "true"))
 	FName SlotName;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
-	int Count;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = "true"))
+	int SlotNum;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
 	TEnumAsByte<ESlotType> SlotType;
 
-	UPROPERTY()
+	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<class UOverlay> SlotOverlay;
 
-	UPROPERTY()
+	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<class UImage> Thumbnail;
 
 	UPROPERTY()
 	TObjectPtr<class UTexture2D> ThumbnailTexture;
 
-	UPROPERTY()
+	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<class UTextBlock> SlotInfo;
 
 	UPROPERTY()
 	TSubclassOf<class UDSSlotWidget> DragVisualSlot;
 
-// Drag The Slot
+// Drag And Drop The Slot
 protected:
 	virtual FReply NativeOnMouseButtonDown( const FGeometry& InGeometry, const FPointerEvent& InMouseEvent ) override;
 	virtual void NativeOnDragDetected( const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation ) override;
+	virtual bool NativeOnDrop( const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation ) override;
 };

@@ -17,6 +17,8 @@ class DARKSORCERY_API ADSPlayerController : public APlayerController
 public:
 	ADSPlayerController();
 
+	FORCEINLINE UDSHUDWidget* GetWidget() { return DSHUDWidget; }
+
 protected:
 	virtual void BeginPlay() override;
 

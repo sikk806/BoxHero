@@ -7,9 +7,6 @@
 #include "Character/DSCharacterPlayer.h"
 #include "DSUserWidget.generated.h"
 
-/**
- *
- */
 UCLASS()
 class DARKSORCERY_API UDSUserWidget : public UUserWidget
 {
@@ -21,8 +18,9 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Actor)
-	TObjectPtr<AActor> OwningActor;
+	TObjectPtr<AActor> OwningActor;	
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Actor)
 	TObjectPtr<ADSCharacterPlayer> OwningPlayer;
+
 };

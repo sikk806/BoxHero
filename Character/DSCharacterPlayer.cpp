@@ -80,6 +80,12 @@ ADSCharacterPlayer::ADSCharacterPlayer()
         SkillAction = InputActionSkillRef.Object;
     }
 
+    static ConstructorHelpers::FObjectFinder<UInputAction> InputSkillWidgetRef(TEXT("/Script/EnhancedInput.InputAction'/Game/DarkSorcery/Input/Actions/IA_Skills.IA_Skills'"));
+    if (InputSkillWidgetRef.Object)
+    {
+        SkillWidget = InputSkillWidgetRef.Object;
+    }
+
     // Anim Instance (Anim Blueprint)
     static ConstructorHelpers::FClassFinder<UAnimInstance> AnimInstanceClassRef(TEXT("/Game/DarkSorcery/Animation/ADS_Character.ADS_Character_C"));
     if (AnimInstanceClassRef.Class)
@@ -167,12 +173,14 @@ void ADSCharacterPlayer::SetupPlayerInputComponent(UInputComponent *PlayerInputC
     EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ADSCharacterPlayer::Look);
     EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ADSCharacterPlayer::Attack);
     EnhancedInputComponent->BindAction(SkillAction, ETriggerEvent::Triggered, this, &ADSCharacterPlayer::ActivateSkill);
+    EnhancedInputComponent->BindAction(SkillWidget, ETriggerEvent::Triggered, this, &ADSCharacterPlayer::CharacterSkillWidget);
 }
 
 // Tick For Debug
 void ADSCharacterPlayer::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+
 }
 
 void ADSCharacterPlayer::Move(const FInputActionValue &Value)
@@ -204,6 +212,26 @@ void ADSCharacterPlayer::Look(const FInputActionValue &Value)
 
     AddControllerYawInput(LookAxisVector.X);
     AddControllerPitchInput(LookAxisVector.Y);
+}
+
+void ADSCharacterPlayer::Attack()
+{
+    ProcessComboCommand();
+}
+
+void ADSCharacterPlayer::CallOnHitDelegate(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
+{
+    ADSCharacterEnemy *HitActor = Cast<ADSCharacterEnemy>(OtherActor);
+    if (HitActor)
+    {
+        FHitResult &HitResult = const_cast<FHitResult &>(SweepResult);
+        if (&HitResult)
+        {
+            OnHit.Broadcast(HitActor, HitResult);
+            HitActor->DamagedParticle->SetTemplate(WeaponParticle);
+            HitActor->DamagedParticle->SetActive(true);
+        }
+    }
 }
 
 void ADSCharacterPlayer::ProcessComboCommand()
@@ -293,6 +321,18 @@ void ADSCharacterPlayer::ComboCheck()
     }
 }
 
+void ADSCharacterPlayer::SettingWeaponCollision()
+{
+    if (WeaponBoxCollision->GetCollisionEnabled() == ECollisionEnabled::NoCollision)
+    {
+        WeaponBoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+    }
+    else
+    {
+        WeaponBoxCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    }
+}
+
 void ADSCharacterPlayer::ActivateSkill()
 {
     FDSCharacterSkillData Skill = UDSGameSingleton::Get().GetCharacterSkillData(TEXT("WhirlWind"));
@@ -358,40 +398,22 @@ void ADSCharacterPlayer::SetupHUDWidget(UDSHUDWidget *InHUDWidget)
         InHUDWidget->SettingHUD(Stat->GetMaxHp(), SkillManager->GetMaxMp());
         InHUDWidget->UpdateHpBar(Stat->GetNowHp());
         InHUDWidget->UpdateMpBar(SkillManager->GetNowMp());
+        HUDWidget = InHUDWidget;
 
         Stat->OnHpChanged.AddUObject(InHUDWidget, &UDSHUDWidget::UpdateHpBar);
         SkillManager->OnMpChanged.AddUObject(InHUDWidget, &UDSHUDWidget::UpdateMpBar);
     }
 }
 
-void ADSCharacterPlayer::Attack()
+void ADSCharacterPlayer::SetQuickSlotInfo()
 {
-    ProcessComboCommand();
+    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Success To Connect QuickSlot And Player!"));
 }
 
-void ADSCharacterPlayer::CallOnHitDelegate(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
+void ADSCharacterPlayer::CharacterSkillWidget()
 {
-    ADSCharacterEnemy *HitActor = Cast<ADSCharacterEnemy>(OtherActor);
-    if (HitActor)
+    if(HUDWidget)
     {
-        FHitResult &HitResult = const_cast<FHitResult &>(SweepResult);
-        if (&HitResult)
-        {
-            OnHit.Broadcast(HitActor, HitResult);
-            HitActor->DamagedParticle->SetTemplate(WeaponParticle);
-            HitActor->DamagedParticle->SetActive(true);
-        }
-    }
-}
-
-void ADSCharacterPlayer::SettingWeaponCollision()
-{
-    if (WeaponBoxCollision->GetCollisionEnabled() == ECollisionEnabled::NoCollision)
-    {
-        WeaponBoxCollision->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-    }
-    else
-    {
-        WeaponBoxCollision->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+        HUDWidget->SetSkillWidgetVisibility();
     }
 }

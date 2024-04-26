@@ -20,8 +20,6 @@ void ADSPlayerController::BeginPlay()
     FInputModeGameOnly GameOnlyInputMode;
     SetInputMode(GameOnlyInputMode);
 
-    bShowMouseCursor = true;
-
     if (DSHUDWidgetClass)
     {
         DSHUDWidget = CreateWidget<UDSHUDWidget>(this, DSHUDWidgetClass);

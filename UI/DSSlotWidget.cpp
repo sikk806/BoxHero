@@ -2,6 +2,7 @@
 
 #include "UI/DSSlotWidget.h"
 #include "GameData/DSGameSingleton.h"
+#include "Interface/DSQuickSlotInfoInterface.h"
 #include "UI/DSDragSlot.h"
 
 #include "Framework/Application/SlateApplication.h"
@@ -24,29 +25,54 @@ void UDSSlotWidget::NativeConstruct()
 {
     Super::NativeConstruct();
 
-    SlotOverlay = Cast<UOverlay>(GetWidgetFromName("OLSlot"));
-    ensure(SlotOverlay);
-
-    Thumbnail = Cast<UImage>(GetWidgetFromName("ImgThumbnail"));
-    ensure(Thumbnail);
-
-    SlotInfo = Cast<UTextBlock>(GetWidgetFromName("TxtSlot"));
-    ensure(SlotInfo);
 }
 
 void UDSSlotWidget::SetSlotData()
 {
     switch (SlotType)
     {
-    case ESlotType::SLOT_Skill:
-    {
-        ensure(!SlotName.IsNone());
-        FDSCharacterSkillData SlotData = UDSGameSingleton::Get().GetCharacterSkillData(SlotName);
-        SlotInfo->SetVisibility(ESlateVisibility::Hidden);
-        SetThumbnail(SlotData.Thumbnail);
-
+    case ESlotType::SLOT_None:
+        Thumbnail->SetColorAndOpacity(FLinearColor(0.7f, 0.7f, 0.7f));
         break;
-    }
+    case ESlotType::SLOT_Skill:
+        if (!ThumbnailTexture)
+        {
+            ensure(!SlotName.IsNone());
+            FDSCharacterSkillData SlotData = UDSGameSingleton::Get().GetCharacterSkillData(SlotName);
+            ThumbnailTexture = Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), nullptr, *SlotData.Thumbnail.ToString()));
+            SetThumbnail();
+        }
+        else
+        {
+            SetThumbnail();
+        }
+        SlotInfo->SetVisibility(ESlateVisibility::Hidden);
+        break;
+    case ESlotType::SLOT_QuickSkill:
+        if (SlotName == FName("None"))
+        {
+            Thumbnail->SetColorAndOpacity(FLinearColor(0.4f, 0.4f, 0.4f));
+            switch (SlotNum)
+            {
+            case 0:
+                SlotInfo->SetText(FText::FromString("Q"));
+                break;
+            case 1:
+                SlotInfo->SetText(FText::FromString("E"));
+                break;
+            case 2:
+                SlotInfo->SetText(FText::FromString("R"));
+                break;
+            default:
+                SlotInfo->SetVisibility(ESlateVisibility::Hidden);
+                break;
+            }
+        }
+        else
+        {
+            SetThumbnail();
+        }
+        break;
     default:
         break;
     }
@@ -57,9 +83,12 @@ void UDSSlotWidget::SetSlotType(ESlotType Type)
     SlotType = Type;
 }
 
-void UDSSlotWidget::SetThumbnail(FText ThumbnailLink)
+void UDSSlotWidget::SetThumbnail()
 {
-    ThumbnailTexture = Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), nullptr, *ThumbnailLink.ToString()));
+    if (Thumbnail == nullptr)
+    {
+        return;
+    }
     Thumbnail->SetBrushFromTexture(ThumbnailTexture);
 }
 
@@ -82,9 +111,8 @@ FReply UDSSlotWidget::NativeOnMouseButtonDown(const FGeometry &InGeometry, const
         switch (SlotType)
         {
         case SLOT_Skill:
-        {
             Reply = UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton);
-        }
+            break;
         }
     }
 
@@ -103,37 +131,58 @@ void UDSSlotWidget::NativeOnDragDetected(const FGeometry &InGeometry, const FPoi
         Drag->SlotTexture = this->ThumbnailTexture;
         Drag->SlotType = this->SlotType;
 
-        if (DragVisualSlot)
+        if (DragVisualSlot && OwningPlayer)
         {
-            if (OwningPlayer)
+            APlayerController *Controller = Cast<APlayerController>(OwningPlayer->Controller);
+            if (Controller)
             {
-                APlayerController *Controller = Cast<APlayerController>(OwningPlayer->Controller);
-                if (Controller)
+                UDSSlotWidget *VisualSlot = CreateWidget<UDSSlotWidget>(Controller, DragVisualSlot);
+                if (VisualSlot)
                 {
-                    UDSSlotWidget *VisualSlot = CreateWidget<UDSSlotWidget>(Cast<APlayerController>(OwningPlayer->Controller), DragVisualSlot);
-                    if(VisualSlot)
-                    {
-                        VisualSlot->SetRenderScale(FVector2D(0.5f, 0.5f));
-                        VisualSlot->OwningPlayer = this->OwningPlayer;
-                        VisualSlot->SlotName = this->SlotName;
-                        VisualSlot->SlotType = this->SlotType;
-                        VisualSlot->ThumbnailTexture = this->ThumbnailTexture;
-                        VisualSlot->SlotInfo = this->SlotInfo;
+                    VisualSlot->SetRenderScale(FVector2D(0.5f, 0.5f));
+                    VisualSlot->OwningPlayer = this->OwningPlayer;
+                    VisualSlot->SlotName = this->SlotName;
+                    VisualSlot->SlotType = this->SlotType;
+                    VisualSlot->ThumbnailTexture = this->ThumbnailTexture;
+                    VisualSlot->SlotInfo = this->SlotInfo;
+                    VisualSlot->SetSlotData();
 
-                        Drag->DefaultDragVisual = VisualSlot;
-                        GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, TEXT("Drag Complete"));
-                    }
+                    Drag->DefaultDragVisual = VisualSlot;
                 }
-                else
-                    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("No Controller"));
             }
             else
-                UE_LOG(LogTemp, Warning, TEXT("NoOwningPlayer"));
-            
+                GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("No Controller"));
         }
         else
         {
             GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("No DragVisualSlot"));
         }
+    }
+}
+
+bool UDSSlotWidget::NativeOnDrop(const FGeometry &InGeometry, const FDragDropEvent &InDragDropEvent, UDragDropOperation *InOperation)
+{
+    Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
+    UDSDragSlot *Drag = Cast<UDSDragSlot>(InOperation);
+
+    if (Drag)
+    {
+        switch (this->SlotType)
+        {
+        case ESlotType::SLOT_QuickSkill:
+            SlotName = Drag->SlotName;
+            ThumbnailTexture = Drag->SlotTexture;
+            Thumbnail->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f));
+            SetSlotData();
+            break;
+        default:
+            break;
+        }
+        return true;
+    }
+    else
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Slot Change Fail..."));
+        return false;
     }
 }

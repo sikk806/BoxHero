@@ -33,6 +33,9 @@ public:
 protected:
 	TObjectPtr<ADSCharacterPlayer> OwningPlayer;
 
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<class UCanvasPanel> Canvas;
+
 	UPROPERTY()
 	TObjectPtr<class UDSHpBarWidget> HpBar;
 
@@ -44,7 +47,14 @@ protected:
 
 	// Character Skill
 public:
+	void SetSkillWidgetVisibility();
+	
 protected:
 	UPROPERTY()
 	TObjectPtr<class UDSSkillWidget> Skill;
+
+	UPROPERTY()
+	TObjectPtr<class UDSQuickSkillWidget> QuickSkill;
+
+	virtual FReply NativeOnPreviewKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
 };

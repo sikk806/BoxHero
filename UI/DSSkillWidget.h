@@ -15,7 +15,6 @@ class DARKSORCERY_API UDSSkillWidget : public UDSUserWidget
 	GENERATED_BODY()
 
 public:
-	void SetOwningPlayer(ADSCharacterPlayer *NewPlayer);
 	virtual void Init(ADSCharacterPlayer* NewPlayer);
 
 protected:

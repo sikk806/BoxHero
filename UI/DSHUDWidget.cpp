@@ -6,6 +6,7 @@
 #include "UI/DSMpBarWidget.h"
 #include "UI/DSSlotWidget.h"
 #include "UI/DSSkillWidget.h"
+#include "UI/DSQuickSkillWidget.h"
 #include "DSHUDWidget.h"
 
 UDSHUDWidget::UDSHUDWidget(const FObjectInitializer &ObjectInitializer) : Super(ObjectInitializer)
@@ -26,6 +27,9 @@ void UDSHUDWidget::NativeConstruct()
     Skill = Cast<UDSSkillWidget>(GetWidgetFromName(TEXT("WidgetSkill")));
     ensure(Skill);
 
+    QuickSkill = Cast<UDSQuickSkillWidget>(GetWidgetFromName(TEXT("WidgetQuickSkill")));
+    ensure(QuickSkill);
+
     IDSCharacterHUDInterface *HUDPawn = Cast<IDSCharacterHUDInterface>(GetOwningPlayerPawn());
     if (HUDPawn)
     {
@@ -42,9 +46,9 @@ void UDSHUDWidget::SettingHUD(float SetMaxHp, float SetMaxMp)
     MpBar->SetMaxMp(MaxMp);
 
     Skill->Init(OwningPlayer);
+    Skill->SetVisibility(ESlateVisibility::Hidden);
 
-    
-
+    QuickSkill->Init(OwningPlayer);
 }
 
 void UDSHUDWidget::UpdateHpBar(float NewCurrentHp)
@@ -56,4 +60,67 @@ void UDSHUDWidget::UpdateHpBar(float NewCurrentHp)
 void UDSHUDWidget::UpdateMpBar(float NewCurrentMp)
 {
     MpBar->UpdateMpBar(NewCurrentMp);
+}
+
+void UDSHUDWidget::SetSkillWidgetVisibility()
+{
+    if (Skill->GetVisibility() == ESlateVisibility::Hidden)
+    {
+        Skill->SetVisibility(ESlateVisibility::Visible);
+        if (OwningPlayer)
+        {
+            APlayerController *Controller = Cast<APlayerController>(OwningPlayer->Controller);
+            if (Controller)
+            {
+                FInputModeUIOnly UIOnlyInputMode;
+                UIOnlyInputMode.SetWidgetToFocus(QuickSkill->TakeWidget());
+                Controller->SetInputMode(UIOnlyInputMode);
+                Controller->bShowMouseCursor = true;
+            }
+        }
+    }
+    else
+    {
+        Skill->SetVisibility(ESlateVisibility::Hidden);
+        if (OwningPlayer)
+        {
+            APlayerController *Controller = Cast<APlayerController>(OwningPlayer->Controller);
+            if (Controller)
+            {
+                FInputModeGameOnly GameOnlyInputMode;
+                Controller->SetInputMode(GameOnlyInputMode);
+                Controller->bShowMouseCursor = false;
+            }
+        }
+    }
+}
+
+FReply UDSHUDWidget::NativeOnPreviewKeyDown(const FGeometry &InGeometry, const FKeyEvent &InKeyEvent)
+{
+    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("HUD?"));
+    FEventReply Reply;
+    Reply.NativeReply = Super::NativeOnPreviewKeyDown(InGeometry, InKeyEvent);
+    if(InKeyEvent.GetKey() == EKeys::Q)
+    {
+        if(OwningPlayer)
+        {
+            IDSQuickSlotInfoInterface* QuickSlot = Cast<IDSQuickSlotInfoInterface>(OwningPlayer);
+            if(QuickSlot)
+            {
+                QuickSlot->SetQuickSlotInfo();
+            }
+            else
+            {
+                GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("No QuickSlotInterface in QuickSkillWidget"));
+            }
+        }
+        else
+        {
+            GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("No OwningPlayer in QuickSkillWidget"));
+        }
+    }
+    
+
+
+    return Reply.NativeReply;
 }
