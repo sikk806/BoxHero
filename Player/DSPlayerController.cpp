@@ -20,6 +20,8 @@ void ADSPlayerController::BeginPlay()
     FInputModeGameOnly GameOnlyInputMode;
     SetInputMode(GameOnlyInputMode);
 
+    bEnableMouseOverEvents = true;
+
     if (DSHUDWidgetClass)
     {
         DSHUDWidget = CreateWidget<UDSHUDWidget>(this, DSHUDWidgetClass);

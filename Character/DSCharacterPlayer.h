@@ -148,4 +148,7 @@ protected:
 	virtual void SetQuickSlotInfo() override;
 
 	void CharacterSkillWidget();
+
+private:
+	bool bWidgetOn;
 };

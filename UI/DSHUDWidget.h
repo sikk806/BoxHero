@@ -47,7 +47,7 @@ protected:
 
 	// Character Skill
 public:
-	void SetSkillWidgetVisibility();
+	bool SetSkillWidgetVisibility();
 	
 protected:
 	UPROPERTY()

@@ -62,7 +62,7 @@ void UDSHUDWidget::UpdateMpBar(float NewCurrentMp)
     MpBar->UpdateMpBar(NewCurrentMp);
 }
 
-void UDSHUDWidget::SetSkillWidgetVisibility()
+bool UDSHUDWidget::SetSkillWidgetVisibility()
 {
     if (Skill->GetVisibility() == ESlateVisibility::Hidden)
     {
@@ -72,12 +72,14 @@ void UDSHUDWidget::SetSkillWidgetVisibility()
             APlayerController *Controller = Cast<APlayerController>(OwningPlayer->Controller);
             if (Controller)
             {
-                FInputModeUIOnly UIOnlyInputMode;
-                UIOnlyInputMode.SetWidgetToFocus(QuickSkill->TakeWidget());
+                FInputModeGameAndUI UIOnlyInputMode;
+                UIOnlyInputMode.SetWidgetToFocus(Skill->TakeWidget());
                 Controller->SetInputMode(UIOnlyInputMode);
+
                 Controller->bShowMouseCursor = true;
             }
         }
+        return true;
     }
     else
     {
@@ -92,6 +94,7 @@ void UDSHUDWidget::SetSkillWidgetVisibility()
                 Controller->bShowMouseCursor = false;
             }
         }
+        return false;
     }
 }
 
@@ -100,12 +103,12 @@ FReply UDSHUDWidget::NativeOnPreviewKeyDown(const FGeometry &InGeometry, const F
     GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("HUD?"));
     FEventReply Reply;
     Reply.NativeReply = Super::NativeOnPreviewKeyDown(InGeometry, InKeyEvent);
-    if(InKeyEvent.GetKey() == EKeys::Q)
+    if (InKeyEvent.GetKey() == EKeys::K)
     {
-        if(OwningPlayer)
+        if (OwningPlayer)
         {
-            IDSQuickSlotInfoInterface* QuickSlot = Cast<IDSQuickSlotInfoInterface>(OwningPlayer);
-            if(QuickSlot)
+            IDSQuickSlotInfoInterface *QuickSlot = Cast<IDSQuickSlotInfoInterface>(OwningPlayer);
+            if (QuickSlot)
             {
                 QuickSlot->SetQuickSlotInfo();
             }
@@ -119,8 +122,6 @@ FReply UDSHUDWidget::NativeOnPreviewKeyDown(const FGeometry &InGeometry, const F
             GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("No OwningPlayer in QuickSkillWidget"));
         }
     }
-    
-
 
     return Reply.NativeReply;
 }

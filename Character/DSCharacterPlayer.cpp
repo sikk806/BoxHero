@@ -143,6 +143,9 @@ ADSCharacterPlayer::ADSCharacterPlayer()
     {
         WeaponParticle = WeaponParticleRef.Object;
     }
+
+    // UI Section
+    bWidgetOn = false;
 }
 
 void ADSCharacterPlayer::BeginPlay()
@@ -180,43 +183,51 @@ void ADSCharacterPlayer::SetupPlayerInputComponent(UInputComponent *PlayerInputC
 void ADSCharacterPlayer::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-
 }
 
 void ADSCharacterPlayer::Move(const FInputActionValue &Value)
 {
-    if (IsMontagePlaying(ComboAttackMontage) && bCutAttackMontage)
+    if (!bWidgetOn)
     {
-        bCutAttackMontage = false;
-        UAnimInstance *AnimInstance = GetMesh()->GetAnimInstance();
-        if (AnimInstance)
+        if (IsMontagePlaying(ComboAttackMontage) && bCutAttackMontage)
         {
-            AnimInstance->Montage_Stop(0.25f, ComboAttackMontage);
+            bCutAttackMontage = false;
+            UAnimInstance *AnimInstance = GetMesh()->GetAnimInstance();
+            if (AnimInstance)
+            {
+                AnimInstance->Montage_Stop(0.25f, ComboAttackMontage);
+            }
         }
+        FVector2D MovementVector = Value.Get<FVector2D>();
+
+        const FRotator Rotation = Controller->GetControlRotation();
+        const FRotator YawRotation(0, Rotation.Yaw, 0);
+
+        const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+        const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+        AddMovementInput(ForwardDirection, MovementVector.X);
+        AddMovementInput(RightDirection, MovementVector.Y);
     }
-    FVector2D MovementVector = Value.Get<FVector2D>();
-
-    const FRotator Rotation = Controller->GetControlRotation();
-    const FRotator YawRotation(0, Rotation.Yaw, 0);
-
-    const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-    const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-
-    AddMovementInput(ForwardDirection, MovementVector.X);
-    AddMovementInput(RightDirection, MovementVector.Y);
 }
 
 void ADSCharacterPlayer::Look(const FInputActionValue &Value)
 {
-    FVector2D LookAxisVector = Value.Get<FVector2D>();
+    if (!bWidgetOn)
+    {
+        FVector2D LookAxisVector = Value.Get<FVector2D>();
 
-    AddControllerYawInput(LookAxisVector.X);
-    AddControllerPitchInput(LookAxisVector.Y);
+        AddControllerYawInput(LookAxisVector.X);
+        AddControllerPitchInput(LookAxisVector.Y);
+    }
 }
 
 void ADSCharacterPlayer::Attack()
 {
-    ProcessComboCommand();
+    if (!bWidgetOn)
+    {
+        ProcessComboCommand();
+    }
 }
 
 void ADSCharacterPlayer::CallOnHitDelegate(UPrimitiveComponent *OverlappedComponent, AActor *OtherActor, UPrimitiveComponent *OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
@@ -412,8 +423,8 @@ void ADSCharacterPlayer::SetQuickSlotInfo()
 
 void ADSCharacterPlayer::CharacterSkillWidget()
 {
-    if(HUDWidget)
+    if (HUDWidget)
     {
-        HUDWidget->SetSkillWidgetVisibility();
+        bWidgetOn = HUDWidget->SetSkillWidgetVisibility();
     }
 }
