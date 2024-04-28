@@ -9,6 +9,16 @@
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnMpChangedDelegate, float);
 
+enum Skills
+{
+	WhirlWind = 0,
+};
+
+// Skills GetSkillTypeFromName(FName SkillName)
+// {
+// 	if(SkillName == TEXT("WhirlWind")) return WhirlWind;
+// };
+
 struct FQuickSlotSkill
 {
 	FName SkillName;
@@ -83,5 +93,7 @@ protected:
 	virtual void AddQuickSlot(FName NewSkillName, int SkillNum) override;
 	virtual void RemoveQuickSlot(int SkillNum) override;
 
-	
+	// Spawn Skills
+protected:
+	void SpawnWhirlWind(FVector PlayerLocation, FRotator PlayerRotation);
 };

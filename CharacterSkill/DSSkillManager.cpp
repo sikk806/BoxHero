@@ -57,19 +57,15 @@ void UDSSkillManager::SetMp(float NewMp)
 void UDSSkillManager::ActivateSkill(FVector PlayerLocation, FRotator PlayerRotation, int SkillNum)
 {
 	FName SkillName = QuickSkillName[SkillNum];
-	ADSCharacterSkill* Skill = GetWorld()->SpawnActor<ADSCharacterSkill>(ADSCharacterSkill::StaticClass(), PlayerLocation, PlayerRotation);
-	// DSMeleeSkillComponent need To Follow the Character (Ex. WhirlWind)
-	//AWhirlWind *Skill = GetWorld()->SpawnActor<AWhirlWind>(AWhirlWind::StaticClass(), PlayerLocation, PlayerRotation);
-	if (Skill)
-	{
-		UDSCharacterSkillComponent* SkillComponent = Cast<UDSCharacterSkillComponent>(Skill->GetComponentByClass(UDSCharacterSkillComponent::StaticClass()));
-		//UDSMeleeSkillComponent *SkillComponent = Cast<UDSMeleeSkillComponent>(Skill->GetComponentByClass(UDSMeleeSkillComponent::StaticClass()));
-		if (SkillComponent)
-		{
-			SkillActor = Skill;
-			SkillActor->OnDestroyed.AddDynamic(this, &UDSSkillManager::DeActivateSkill);
-		}
-	}
+	// Skills Type = GetSkillTypeFromName(SkillName);
+	// switch(Type)
+	// {
+	// 	case WhirlWind:
+	// 	break;
+	// 	default:
+	// 	break;
+
+	// }
 }
 
 void UDSSkillManager::DeActivateSkill(AActor *DestroySkill)
@@ -93,4 +89,18 @@ void UDSSkillManager::RemoveQuickSlot(int SlotNum)
 
 	QuickSkills[SlotNum] = FQuickSlotSkill();
 	
+}
+
+void UDSSkillManager::SpawnWhirlWind(FVector PlayerLocation, FRotator PlayerRotation)
+{
+	AWhirlWind *Skill = GetWorld()->SpawnActor<AWhirlWind>(AWhirlWind::StaticClass(), PlayerLocation, PlayerRotation);
+	if (Skill)
+	{
+		UDSMeleeSkillComponent *SkillComponent = Cast<UDSMeleeSkillComponent>(Skill->GetComponentByClass(UDSMeleeSkillComponent::StaticClass()));
+		if (SkillComponent)
+		{
+			SkillActor = Skill;
+			SkillActor->OnDestroyed.AddDynamic(this, &UDSSkillManager::DeActivateSkill);
+		}
+	}
 }

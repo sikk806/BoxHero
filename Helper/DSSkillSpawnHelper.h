@@ -13,5 +13,9 @@ UCLASS()
 class DARKSORCERY_API UDSSkillSpawnHelper : public UObject
 {
 	GENERATED_BODY()
+
+// Spawn the Skill Actor
+public:
+	
 	
 };

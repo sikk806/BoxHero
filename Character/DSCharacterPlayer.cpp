@@ -353,7 +353,7 @@ void ADSCharacterPlayer::ActivateSkill()
     {
         PressedKey = PlayerController->GetLastKeyPressed();
     }
-    int SkillNum;
+    int SkillNum = -1;
     if (PressedKey.ToString() == "Q")
     {
         SkillNum = 0;
