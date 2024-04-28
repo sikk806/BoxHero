@@ -139,6 +139,9 @@ protected:
 	TObjectPtr<class UParticleSystem> WeaponParticle;
 
 	// UI Section
+public:
+	UActorComponent* GetSkillManager();
+	
 protected:
 	UPROPERTY()
 	TObjectPtr<class UDSHUDWidget> HUDWidget;

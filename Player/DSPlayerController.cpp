@@ -36,3 +36,29 @@ void ADSPlayerController::BeginPlay()
         }
     }
 }
+
+void ADSPlayerController::SetupInputComponent()
+{
+    Super::SetupInputComponent();
+
+    FInputKeyBinding QB(FInputChord(EKeys::Q), EInputEvent::IE_Pressed);
+    QB.bConsumeInput = true;
+    QB.KeyDelegate.GetDelegateForManualSet().BindUObject(this, &ADSPlayerController::HandleKeyPress, EKeys::Q);
+
+    FInputKeyBinding EB(FInputChord(EKeys::E), EInputEvent::IE_Pressed);
+    EB.bConsumeInput = true;
+    EB.KeyDelegate.GetDelegateForManualSet().BindUObject(this, &ADSPlayerController::HandleKeyPress, EKeys::E);
+
+    FInputKeyBinding RB(FInputChord(EKeys::R), EInputEvent::IE_Pressed);
+    RB.bConsumeInput = true;
+    RB.KeyDelegate.GetDelegateForManualSet().BindUObject(this, &ADSPlayerController::HandleKeyPress, EKeys::R);
+
+    InputComponent->KeyBindings.Add(QB);
+    InputComponent->KeyBindings.Add(EB);
+    InputComponent->KeyBindings.Add(RB);
+}
+
+void ADSPlayerController::HandleKeyPress(FKey Key)
+{
+    LastKeyPressed = Key;
+}

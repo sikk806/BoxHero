@@ -4,6 +4,7 @@
 
 #include "CharacterSkill/DSMeleeSkillComponent.h"
 #include "CharacterSkill/WhirlWind.h"
+#include "GameData/DSGameSingleton.h"
 #include "DSSkillManager.h"
 
 // Sets default values for this component's properties
@@ -20,6 +21,12 @@ UDSSkillManager::UDSSkillManager()
 	}
 
 	bWantsInitializeComponent = true;
+
+	for(int i = 0; i < 3; i++)
+	{
+		QuickSkills.Add(FQuickSlotSkill());
+		QuickSkillName.Add(FName(""));
+	}
 }
 
 void UDSSkillManager::InitializeComponent()
@@ -37,6 +44,8 @@ void UDSSkillManager::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	{
 		SkillActor->SetActorLocation(GetOwner()->GetActorLocation());
 	}
+
+	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, FString::Printf(TEXT("Slot[1] Skill Name : %s | Use Mana : %.0f"), *QuickSkills[1].SkillName.ToString(), QuickSkills[1].Mana));
 }
 
 void UDSSkillManager::SetMp(float NewMp)
@@ -45,13 +54,16 @@ void UDSSkillManager::SetMp(float NewMp)
 	OnMpChanged.Broadcast(NowMp);
 }
 
-void UDSSkillManager::ActivateSkill(FVector PlayerLocation, FRotator PlayerRotation)
+void UDSSkillManager::ActivateSkill(FVector PlayerLocation, FRotator PlayerRotation, int SkillNum)
 {
+	FName SkillName = QuickSkillName[SkillNum];
+	ADSCharacterSkill* Skill = GetWorld()->SpawnActor<ADSCharacterSkill>(ADSCharacterSkill::StaticClass(), PlayerLocation, PlayerRotation);
 	// DSMeleeSkillComponent need To Follow the Character (Ex. WhirlWind)
-	AWhirlWind *Skill = GetWorld()->SpawnActor<AWhirlWind>(AWhirlWind::StaticClass(), PlayerLocation, PlayerRotation);
+	//AWhirlWind *Skill = GetWorld()->SpawnActor<AWhirlWind>(AWhirlWind::StaticClass(), PlayerLocation, PlayerRotation);
 	if (Skill)
 	{
-		UDSMeleeSkillComponent *SkillComponent = Cast<UDSMeleeSkillComponent>(Skill->GetComponentByClass(UDSMeleeSkillComponent::StaticClass()));
+		UDSCharacterSkillComponent* SkillComponent = Cast<UDSCharacterSkillComponent>(Skill->GetComponentByClass(UDSCharacterSkillComponent::StaticClass()));
+		//UDSMeleeSkillComponent *SkillComponent = Cast<UDSMeleeSkillComponent>(Skill->GetComponentByClass(UDSMeleeSkillComponent::StaticClass()));
 		if (SkillComponent)
 		{
 			SkillActor = Skill;
@@ -63,4 +75,22 @@ void UDSSkillManager::ActivateSkill(FVector PlayerLocation, FRotator PlayerRotat
 void UDSSkillManager::DeActivateSkill(AActor *DestroySkill)
 {
 	SkillActor = nullptr;
+}
+
+void UDSSkillManager::AddQuickSlot(FName NewSkillName, int SlotNum)
+{
+	QuickSkillName[SlotNum] = NewSkillName;
+
+	FDSCharacterSkillData Skill = UDSGameSingleton::Get().GetCharacterSkillData(NewSkillName);
+	FQuickSlotSkill SettingSkill(NewSkillName, Skill.Mana, Skill.Damage, Skill.CoolTime);
+	QuickSkills[SlotNum] = SettingSkill;
+	
+}
+
+void UDSSkillManager::RemoveQuickSlot(int SlotNum)
+{
+	QuickSkillName[SlotNum] = "";
+
+	QuickSkills[SlotNum] = FQuickSlotSkill();
+	
 }

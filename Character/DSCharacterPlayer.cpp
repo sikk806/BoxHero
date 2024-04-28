@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "DSCharacterPlayer.h"
+#include "Player/DSPlayerController.h"
 #include "Character/DSComboActionData.h"
 #include "CharacterSkill/DSSkillManager.h"
 #include "Character/DSCharacterEnemy.h"
@@ -74,7 +75,7 @@ ADSCharacterPlayer::ADSCharacterPlayer()
         AttackAction = InputActionAttackRef.Object;
     }
 
-    static ConstructorHelpers::FObjectFinder<UInputAction> InputActionSkillRef(TEXT("/Script/EnhancedInput.InputAction'/Game/DarkSorcery/Input/Actions/IA_SkillQ.IA_SkillQ'"));
+    static ConstructorHelpers::FObjectFinder<UInputAction> InputActionSkillRef(TEXT("/Script/EnhancedInput.InputAction'/Game/DarkSorcery/Input/Actions/IA_UseSkill.IA_UseSkill'"));
     if (InputActionSkillRef.Object)
     {
         SkillAction = InputActionSkillRef.Object;
@@ -346,19 +347,58 @@ void ADSCharacterPlayer::SettingWeaponCollision()
 
 void ADSCharacterPlayer::ActivateSkill()
 {
-    FDSCharacterSkillData Skill = UDSGameSingleton::Get().GetCharacterSkillData(TEXT("WhirlWind"));
-    float UseMana = Skill.Mana;
-    if (UseMana != 0.f && SkillManager->GetNowMp() >= UseMana)
+    ADSPlayerController *PlayerController = Cast<ADSPlayerController>(Controller);
+    FKey PressedKey;
+    if (PlayerController)
     {
-        SkillManager->SetMp(UseMana);
-        SkillManager->ActivateSkill(GetActorLocation(), GetActorRotation());
-        UAnimInstance *AnimInstance = GetMesh()->GetAnimInstance();
-        if (AnimInstance && SkillMontage)
+        PressedKey = PlayerController->GetLastKeyPressed();
+    }
+    int SkillNum;
+    if (PressedKey.ToString() == "Q")
+    {
+        SkillNum = 0;
+    }
+    else if (PressedKey.ToString() == "E")
+    {
+        SkillNum = 1;
+    }
+    else if (PressedKey.ToString() == "R")
+    {
+        SkillNum = 2;
+    }
+
+    FName SkillName = SkillManager->GetActivateSkillName(SkillNum);
+    FQuickSlotSkill Skill = SkillManager->GetActivateSkill(SkillNum);
+    if (SkillName != "")
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Skill Name: %s"), *SkillName.ToString()));
+        float UseMana = Skill.Mana;
+        if (UseMana != 0.f && SkillManager->GetNowMp() >= UseMana)
         {
-            AnimInstance->Montage_Play(SkillMontage, 4.f);
-            AnimInstance->Montage_JumpToSection(FName("WhirlWind"), SkillMontage);
+            SkillManager->SetMp(UseMana);
+            SkillManager->ActivateSkill(GetActorLocation(), GetActorRotation(), SkillNum);
+            UAnimInstance *AnimInstance = GetMesh()->GetAnimInstance();
+            if (AnimInstance && SkillMontage)
+            {
+                AnimInstance->Montage_Play(SkillMontage, 4.f);
+                AnimInstance->Montage_JumpToSection(SkillName, SkillMontage);
+            }
         }
     }
+    // GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Last Key Pressed: %s"), *PressedKey.ToString()));
+    // FDSCharacterSkillData Skill = UDSGameSingleton::Get().GetCharacterSkillData(TEXT("WhirlWind"));
+    // float UseMana = Skill.Mana;
+    // if (UseMana != 0.f && SkillManager->GetNowMp() >= UseMana)
+    // {
+    //     SkillManager->SetMp(UseMana);
+    //     SkillManager->ActivateSkill(GetActorLocation(), GetActorRotation());
+    //     UAnimInstance *AnimInstance = GetMesh()->GetAnimInstance();
+    //     if (AnimInstance && SkillMontage)
+    //     {
+    //         AnimInstance->Montage_Play(SkillMontage, 4.f);
+    //         AnimInstance->Montage_JumpToSection(FName("WhirlWind"), SkillMontage);
+    //     }
+    // }
 }
 
 void ADSCharacterPlayer::SetComboWarping()
@@ -387,6 +427,19 @@ void ADSCharacterPlayer::SetComboWarping()
     if (MotionWarpingComponent)
     {
         MotionWarpingComponent->AddOrUpdateWarpTargetFromLocationAndRotation(TEXT("Warp"), TargetLocation, TargetRotator);
+    }
+}
+
+UActorComponent *ADSCharacterPlayer::GetSkillManager()
+{
+    UActorComponent *ActorComponent = Cast<UActorComponent>(SkillManager);
+    if (SkillManager)
+    {
+        return SkillManager;
+    }
+    else
+    {
+        return nullptr;
     }
 }
 

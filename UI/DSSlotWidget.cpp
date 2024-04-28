@@ -3,6 +3,7 @@
 #include "UI/DSSlotWidget.h"
 #include "GameData/DSGameSingleton.h"
 #include "Interface/DSQuickSlotInfoInterface.h"
+#include "Interface/DSQuickSlotUpdateInterface.h"
 #include "UI/DSDragSlot.h"
 
 #include "Framework/Application/SlateApplication.h"
@@ -97,6 +98,11 @@ void UDSSlotWidget::SetText(FText TextSlotInfo)
     SlotInfo->SetText(TextSlotInfo);
 }
 
+void UDSSlotWidget::SetParentWidget(UDSUserWidget* SetWidget)
+{
+    ParentWidget = SetWidget;
+}
+
 FReply UDSSlotWidget::NativeOnMouseButtonDown(const FGeometry &InGeometry, const FPointerEvent &InMouseEvent)
 {
     FEventReply Reply;
@@ -167,6 +173,7 @@ bool UDSSlotWidget::NativeOnDrop(const FGeometry &InGeometry, const FDragDropEve
 
     if (Drag)
     {
+        IDSQuickSlotUpdateInterface* QuickSlot = Cast<IDSQuickSlotUpdateInterface>(ParentWidget);
         switch (this->SlotType)
         {
         case ESlotType::SLOT_QuickSkill:
@@ -174,6 +181,11 @@ bool UDSSlotWidget::NativeOnDrop(const FGeometry &InGeometry, const FDragDropEve
             ThumbnailTexture = Drag->SlotTexture;
             Thumbnail->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f));
             SetSlotData();
+
+            if(QuickSlot)
+            {
+                QuickSlot->AddQuickSlot(this->SlotName, this->SlotNum);
+            }
             break;
         default:
             break;

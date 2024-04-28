@@ -60,12 +60,20 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<class UTextBlock> SlotInfo;
 
+// Drag And Drop The Slot
+public:
+	void SetParentWidget(UDSUserWidget* SetWidget);
+
+protected:
 	UPROPERTY()
 	TSubclassOf<class UDSSlotWidget> DragVisualSlot;
 
-// Drag And Drop The Slot
-protected:
+	UPROPERTY()
+	TObjectPtr<class UDSUserWidget> ParentWidget;
+
 	virtual FReply NativeOnMouseButtonDown( const FGeometry& InGeometry, const FPointerEvent& InMouseEvent ) override;
 	virtual void NativeOnDragDetected( const FGeometry& InGeometry, const FPointerEvent& InMouseEvent, UDragDropOperation*& OutOperation ) override;
 	virtual bool NativeOnDrop( const FGeometry& InGeometry, const FDragDropEvent& InDragDropEvent, UDragDropOperation* InOperation ) override;
+
+
 };

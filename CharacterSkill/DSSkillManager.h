@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Interface/DSQuickSlotUpdateInterface.h"
 #include "DSSkillManager.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnMpChangedDelegate, float);
@@ -17,10 +18,13 @@ struct FQuickSlotSkill
 
 	FQuickSlotSkill() : SkillName(""), Mana(0.f), Damage(0.f), CoolTime(0.f) {}
 
+	FQuickSlotSkill(FName NewSkillName, float ManaCost, float DamageValue, float CoolDown)
+        : SkillName(NewSkillName), Mana(ManaCost), Damage(DamageValue), CoolTime(CoolDown) {}
+
 };
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class DARKSORCERY_API UDSSkillManager : public UActorComponent
+class DARKSORCERY_API UDSSkillManager : public UActorComponent, public IDSQuickSlotUpdateInterface
 {
 	GENERATED_BODY()
 
@@ -54,8 +58,11 @@ protected:
 
 	// Skills
 public:
+	FORCEINLINE FName GetActivateSkillName(int SkillNum) { return QuickSkillName[SkillNum]; }
+	FORCEINLINE FQuickSlotSkill GetActivateSkill(int SkillNum) { return QuickSkills[SkillNum]; }
+
 	UFUNCTION()
-	virtual void ActivateSkill(FVector PlayerLocation, FRotator PlayerRotation);
+	virtual void ActivateSkill(FVector PlayerLocation, FRotator PlayerRotation, int SkillNum);
 
 	UFUNCTION()
 	virtual void DeActivateSkill(AActor *DestroySkill);
@@ -64,11 +71,17 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill)
 	AActor *SkillActor;
 
+	/* Need to Change -> Go CharacterSkill */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill)
 	TObjectPtr<class UBlueprint> WhirlWind;
 
-	// For QuickSlot
-	TArray<FQuickSlotSkill> QuickSlotSkills;
+	// For QuickSlot Skill
+protected:
+	TArray<FQuickSlotSkill> QuickSkills;
+	TArray<FName> QuickSkillName;
+
+	virtual void AddQuickSlot(FName NewSkillName, int SkillNum) override;
+	virtual void RemoveQuickSlot(int SkillNum) override;
 
 	
 };

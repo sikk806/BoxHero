@@ -21,6 +21,15 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void SetupInputComponent() override;
+
+// Custom InputComponent
+public:
+	FORCEINLINE FKey GetLastKeyPressed() { return LastKeyPressed; }
+
+private:
+	FKey LastKeyPressed;
+	void HandleKeyPress(FKey Key);
 
 // HUD Section
 protected:

@@ -75,7 +75,6 @@ bool UDSHUDWidget::SetSkillWidgetVisibility()
                 FInputModeGameAndUI UIOnlyInputMode;
                 UIOnlyInputMode.SetWidgetToFocus(Skill->TakeWidget());
                 Controller->SetInputMode(UIOnlyInputMode);
-
                 Controller->bShowMouseCursor = true;
             }
         }

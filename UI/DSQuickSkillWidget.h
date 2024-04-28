@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "UI/DSUserWidget.h"
+#include "Interface/DSQuickSlotUpdateInterface.h"
 #include "DSQuickSkillWidget.generated.h"
 
 UCLASS()
-class DARKSORCERY_API UDSQuickSkillWidget : public UDSUserWidget
+class DARKSORCERY_API UDSQuickSkillWidget : public UDSUserWidget, public IDSQuickSlotUpdateInterface
 {
 	GENERATED_BODY()
 public:
@@ -18,7 +19,14 @@ public:
 protected:
 	TArray<UWidget *> Slots;
 
-// Using The Quick Slot
+// Main Character SkillManager
 protected:
-	//virtual FReply NativeOnPreviewKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = SkillManager, Meta = (AllowPrivateAccess = "true"));
+	TObjectPtr<UActorComponent> MainSkillManager;
+
+	TArray<FName> QuickSkills;
+
+	virtual void AddQuickSlot(FName NewSkillName, int SkillNum) override;
+	virtual void RemoveQuickSlot(int SkillNum) override;
+	
 };

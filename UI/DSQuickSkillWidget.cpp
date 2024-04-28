@@ -14,7 +14,10 @@ void UDSQuickSkillWidget::NativeOnInitialized()
 {
     Super::NativeOnInitialized();
 
-    //bIsFocusable = false;
+    QuickSkills.Reserve(3);
+    QuickSkills.Add(FName(""));
+    QuickSkills.Add(FName(""));
+    QuickSkills.Add(FName(""));
 }
 
 void UDSQuickSkillWidget::Init(ADSCharacterPlayer *NewPlayer)
@@ -23,6 +26,7 @@ void UDSQuickSkillWidget::Init(ADSCharacterPlayer *NewPlayer)
     if(NewPlayer)
     {
         SetOwningPlayer(NewPlayer);
+        MainSkillManager = NewPlayer->GetSkillManager();
     }
     TArray<UWidget *> GetWidget;
     if (!WidgetTree)
@@ -43,39 +47,29 @@ void UDSQuickSkillWidget::Init(ADSCharacterPlayer *NewPlayer)
                 SetSlot->SetOwningPlayer(OwningPlayer);
             }
             SetSlot->SetSlotType(ESlotType::SLOT_QuickSkill);
+            SetSlot->SetParentWidget(this);
             SetSlot->SetSlotData();
         }
     }
 
 }
 
+void UDSQuickSkillWidget::AddQuickSlot(FName NewSkillName, int SkillNum)
+{
+    QuickSkills[SkillNum] = NewSkillName;
+    IDSQuickSlotUpdateInterface* QuickSlot = Cast<IDSQuickSlotUpdateInterface>(MainSkillManager);
+    if(QuickSlot)
+    {
+        QuickSlot->AddQuickSlot(NewSkillName, SkillNum);
+    }
+}
 
-// FReply UDSQuickSkillWidget::NativeOnPreviewKeyDown(const FGeometry &InGeometry, const FKeyEvent &InKeyEvent)
-// {
-//     GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("NativeOnKeyDown"));
-//     FEventReply Reply;
-//     Reply.NativeReply = Super::NativeOnPreviewKeyDown(InGeometry, InKeyEvent);
-//     if(InKeyEvent.GetKey() == EKeys::Q)
-//     {
-//         if(OwningPlayer)
-//         {
-//             IDSQuickSlotInfoInterface* QuickSlot = Cast<IDSQuickSlotInfoInterface>(OwningPlayer);
-//             if(QuickSlot)
-//             {
-//                 QuickSlot->SetQuickSlotInfo();
-//             }
-//             else
-//             {
-//                 GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("No QuickSlotInterface in QuickSkillWidget"));
-//             }
-//         }
-//         else
-//         {
-//             GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("No OwningPlayer in QuickSkillWidget"));
-//         }
-//     }
-    
-
-
-//     return Reply.NativeReply;
-// }
+void UDSQuickSkillWidget::RemoveQuickSlot(int SkillNum)
+{
+    QuickSkills[SkillNum] = FName("");
+    IDSQuickSlotUpdateInterface* QuickSlot = Cast<IDSQuickSlotUpdateInterface>(MainSkillManager);
+    if(QuickSlot)
+    {
+        QuickSlot->RemoveQuickSlot(SkillNum);
+    }
+}
