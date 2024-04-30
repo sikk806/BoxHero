@@ -60,5 +60,6 @@ void ADSPlayerController::SetupInputComponent()
 
 void ADSPlayerController::HandleKeyPress(FKey Key)
 {
+    GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("PressedKey: %s"), *Key.ToString()));
     LastKeyPressed = Key;
 }

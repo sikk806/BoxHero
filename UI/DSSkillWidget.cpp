@@ -7,26 +7,7 @@
 
 void UDSSkillWidget::NativeConstruct()
 {
-    // TArray<UWidget *> GetWidget;
-    // if (!WidgetTree)
-    // {
-    //     UE_LOG(LogTemp, Warning, TEXT("Widget Tree is null!"));
-    // }
-    // else
-    // {
-    //     WidgetTree->GetAllWidgets(GetWidget);
 
-    //     for (auto widget : GetWidget)
-    //     {
-    //         UDSSlotWidget *SetSlot = Cast<UDSSlotWidget>(widget);
-    //         if (!SetSlot)
-    //             continue;
-
-    //         SetSlot->SetSlotType(ESlotType::SLOT_Skill);
-    //         SetSlot->SetSlotData();
-    //         break;
-    //     }
-    // }
 }
 
 void UDSSkillWidget::Init(ADSCharacterPlayer* NewPlayer)
@@ -44,6 +25,8 @@ void UDSSkillWidget::Init(ADSCharacterPlayer* NewPlayer)
     {
         WidgetTree->GetAllWidgets(GetWidget);
 
+        int testcnt = 0;
+
         for (auto widget : GetWidget)
         {
             UDSSlotWidget *SetSlot = Cast<UDSSlotWidget>(widget);
@@ -55,7 +38,9 @@ void UDSSkillWidget::Init(ADSCharacterPlayer* NewPlayer)
             }
             SetSlot->SetSlotType(ESlotType::SLOT_Skill);
             SetSlot->SetSlotData();
-            break;
+            testcnt++;
+            if(testcnt == 2)
+                break;
         }
     }
 }

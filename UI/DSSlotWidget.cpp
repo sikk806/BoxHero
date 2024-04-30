@@ -25,7 +25,6 @@ UDSSlotWidget::UDSSlotWidget(const FObjectInitializer &ObjectInitializer) : Supe
 void UDSSlotWidget::NativeConstruct()
 {
     Super::NativeConstruct();
-
 }
 
 void UDSSlotWidget::SetSlotData()
@@ -41,6 +40,7 @@ void UDSSlotWidget::SetSlotData()
             ensure(!SlotName.IsNone());
             FDSCharacterSkillData SlotData = UDSGameSingleton::Get().GetCharacterSkillData(SlotName);
             ThumbnailTexture = Cast<UTexture2D>(StaticLoadObject(UTexture2D::StaticClass(), nullptr, *SlotData.Thumbnail.ToString()));
+            CoolTime = SlotData.CoolTime;
             SetThumbnail();
         }
         else
@@ -57,12 +57,15 @@ void UDSSlotWidget::SetSlotData()
             {
             case 0:
                 SlotInfo->SetText(FText::FromString("Q"));
+                Thumbnail->SetBrushFromTexture(ThumbnailTexture);
                 break;
             case 1:
                 SlotInfo->SetText(FText::FromString("E"));
+                Thumbnail->SetBrushFromTexture(ThumbnailTexture);
                 break;
             case 2:
                 SlotInfo->SetText(FText::FromString("R"));
+                Thumbnail->SetBrushFromTexture(ThumbnailTexture);
                 break;
             default:
                 SlotInfo->SetVisibility(ESlateVisibility::Hidden);
@@ -98,7 +101,7 @@ void UDSSlotWidget::SetText(FText TextSlotInfo)
     SlotInfo->SetText(TextSlotInfo);
 }
 
-void UDSSlotWidget::SetParentWidget(UDSUserWidget* SetWidget)
+void UDSSlotWidget::SetParentWidget(UDSUserWidget *SetWidget)
 {
     ParentWidget = SetWidget;
 }
@@ -116,7 +119,11 @@ FReply UDSSlotWidget::NativeOnMouseButtonDown(const FGeometry &InGeometry, const
     {
         switch (SlotType)
         {
-        case SLOT_Skill:
+        case ESlotType::SLOT_Skill:
+            Reply = UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton);
+            break;
+        case ESlotType::SLOT_QuickSkill:
+            Thumbnail->SetColorAndOpacity(FLinearColor(0.4f, 0.4f, 0.4f));
             Reply = UWidgetBlueprintLibrary::DetectDragIfPressed(InMouseEvent, this, EKeys::LeftMouseButton);
             break;
         }
@@ -136,6 +143,7 @@ void UDSSlotWidget::NativeOnDragDetected(const FGeometry &InGeometry, const FPoi
         Drag->SlotName = this->SlotName;
         Drag->SlotTexture = this->ThumbnailTexture;
         Drag->SlotType = this->SlotType;
+        Drag->CoolTime = this->CoolTime;
 
         if (DragVisualSlot && OwningPlayer)
         {
@@ -169,20 +177,22 @@ void UDSSlotWidget::NativeOnDragDetected(const FGeometry &InGeometry, const FPoi
 bool UDSSlotWidget::NativeOnDrop(const FGeometry &InGeometry, const FDragDropEvent &InDragDropEvent, UDragDropOperation *InOperation)
 {
     Super::NativeOnDrop(InGeometry, InDragDropEvent, InOperation);
+
     UDSDragSlot *Drag = Cast<UDSDragSlot>(InOperation);
 
-    if (Drag)
+    if (Drag && this->IsA(UDSSlotWidget::StaticClass()))
     {
-        IDSQuickSlotUpdateInterface* QuickSlot = Cast<IDSQuickSlotUpdateInterface>(ParentWidget);
+        IDSQuickSlotUpdateInterface *QuickSlot = Cast<IDSQuickSlotUpdateInterface>(ParentWidget);
         switch (this->SlotType)
         {
         case ESlotType::SLOT_QuickSkill:
             SlotName = Drag->SlotName;
             ThumbnailTexture = Drag->SlotTexture;
+            CoolTime = Drag->CoolTime;
             Thumbnail->SetColorAndOpacity(FLinearColor(1.f, 1.f, 1.f));
             SetSlotData();
 
-            if(QuickSlot)
+            if (QuickSlot)
             {
                 QuickSlot->AddQuickSlot(this->SlotName, this->SlotNum);
             }
@@ -196,5 +206,27 @@ bool UDSSlotWidget::NativeOnDrop(const FGeometry &InGeometry, const FDragDropEve
     {
         GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("Slot Change Fail..."));
         return false;
+    }
+}
+
+void UDSSlotWidget::NativeOnDragCancelled(const FDragDropEvent &InDragDropEvent, UDragDropOperation *InOperation)
+{
+    Super::NativeOnDragCancelled(InDragDropEvent, InOperation);
+
+    UDSDragSlot *Drag = Cast<UDSDragSlot>(InOperation);
+    if (Drag)
+    {
+        switch (this->SlotType)
+        {
+        case ESlotType::SLOT_QuickSkill:
+            SlotName = "None";
+            ThumbnailTexture = nullptr;
+            SetSlotData();
+            IDSQuickSlotUpdateInterface *QuickSlot = Cast<IDSQuickSlotUpdateInterface>(ParentWidget);
+            if(QuickSlot)
+            {
+                QuickSlot->AddQuickSlot(FName(TEXT("")), this->SlotNum);
+            }
+        }
     }
 }

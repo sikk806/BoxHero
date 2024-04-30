@@ -25,6 +25,7 @@ protected:
 	TObjectPtr<UActorComponent> MainSkillManager;
 
 	TArray<FName> QuickSkills;
+	TArray<float> QuickCoolDown;
 
 	virtual void AddQuickSlot(FName NewSkillName, int SkillNum) override;
 	virtual void RemoveQuickSlot(int SkillNum) override;

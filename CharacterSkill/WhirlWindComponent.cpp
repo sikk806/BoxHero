@@ -1,12 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "CharacterSkill/DSWhirlWind.h"
+#include "CharacterSkill/WhirlWindComponent.h"
 #include "GameData/DSGameSingleton.h"
-#include "DSWhirlWind.h"
 
 #include "NiagaraComponent.h"
 
-UDSWhirlWind::UDSWhirlWind()
+UWhirlWindComponent::UWhirlWindComponent()
 {
 	SkillEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("SkillEffect"));
 	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> SkillEffectRef(TEXT("/Script/Niagara.NiagaraSystem'/Game/DarkSorcery/Character/Skills/WhirlWind/NS_Warrior_Spin.NS_Warrior_Spin'"));
@@ -18,7 +17,7 @@ UDSWhirlWind::UDSWhirlWind()
 	SkillName = FName(TEXT("WhirlWind"));
 }
 
-void UDSWhirlWind::BeginPlay()
+void UWhirlWindComponent::BeginPlay()
 {
 	Super::BeginPlay();
 

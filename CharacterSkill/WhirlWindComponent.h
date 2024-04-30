@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "CharacterSkill/DSMeleeSkillComponent.h"
-#include "DSWhirlWind.generated.h"
+#include "WhirlWindComponent.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class DARKSORCERY_API UDSWhirlWind : public UDSMeleeSkillComponent
+class DARKSORCERY_API UWhirlWindComponent : public UDSMeleeSkillComponent
 {
 	GENERATED_BODY()
 
 public:
-	UDSWhirlWind();
+	UWhirlWindComponent();
 
 	virtual void BeginPlay() override;
 

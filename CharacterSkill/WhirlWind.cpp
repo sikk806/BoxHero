@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "CharacterSkill/WhirlWind.h"
-#include "CharacterSkill/DSWhirlWind.h"
+#include "CharacterSkill/WhirlWindComponent.h"
 #include "Character/DSCharacterEnemy.h"
 
 #include "NiagaraFunctionLibrary.h"
@@ -15,7 +15,7 @@ AWhirlWind::AWhirlWind()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	WhirlWind = CreateDefaultSubobject<UDSWhirlWind>(TEXT("WhirlWindComponent"));
+	WhirlWind = CreateDefaultSubobject<UWhirlWindComponent>(TEXT("WhirlWindComponent"));
 
 	CheckTime = 0.f;
 	UseMana = WhirlWind->Mana;

@@ -3,9 +3,8 @@
 #include "CharacterSkill/DSSkillManager.h"
 
 #include "CharacterSkill/DSMeleeSkillComponent.h"
-#include "CharacterSkill/WhirlWind.h"
+#include "CharacterSkill/DSSkillFactory.h"
 #include "GameData/DSGameSingleton.h"
-#include "DSSkillManager.h"
 
 // Sets default values for this component's properties
 UDSSkillManager::UDSSkillManager()
@@ -14,18 +13,13 @@ UDSSkillManager::UDSSkillManager()
 
 	MaxMp = 100.f;
 
-	static ConstructorHelpers::FObjectFinder<UBlueprint> WhirlWindRef(TEXT("/Game/DarkSorcery/Character/Skills/WhirlWind/WhirlWind.WhirlWind"));
-	if (WhirlWindRef.Object)
-	{
-		WhirlWind = WhirlWindRef.Object;
-	}
-
 	bWantsInitializeComponent = true;
 
 	for(int i = 0; i < 3; i++)
 	{
 		QuickSkills.Add(FQuickSlotSkill());
 		QuickSkillName.Add(FName(""));
+		QuickCoolTime.Add(0.f);
 	}
 }
 
@@ -45,7 +39,6 @@ void UDSSkillManager::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 		SkillActor->SetActorLocation(GetOwner()->GetActorLocation());
 	}
 
-	//GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Blue, FString::Printf(TEXT("Slot[1] Skill Name : %s | Use Mana : %.0f"), *QuickSkills[1].SkillName.ToString(), QuickSkills[1].Mana));
 }
 
 void UDSSkillManager::SetMp(float NewMp)
@@ -57,15 +50,12 @@ void UDSSkillManager::SetMp(float NewMp)
 void UDSSkillManager::ActivateSkill(FVector PlayerLocation, FRotator PlayerRotation, int SkillNum)
 {
 	FName SkillName = QuickSkillName[SkillNum];
-	// Skills Type = GetSkillTypeFromName(SkillName);
-	// switch(Type)
-	// {
-	// 	case WhirlWind:
-	// 	break;
-	// 	default:
-	// 	break;
-
-	// }
+	ADSCharacterSkill* Skill = DSSkillFactory::CreateSkill(GetWorld(), SkillName, PlayerLocation, PlayerRotation);
+	if(Skill)
+	{
+		SkillActor = Skill;
+		SkillActor->OnDestroyed.AddDynamic(this, &UDSSkillManager::DeActivateSkill);
+	}
 }
 
 void UDSSkillManager::DeActivateSkill(AActor *DestroySkill)
@@ -80,6 +70,7 @@ void UDSSkillManager::AddQuickSlot(FName NewSkillName, int SlotNum)
 	FDSCharacterSkillData Skill = UDSGameSingleton::Get().GetCharacterSkillData(NewSkillName);
 	FQuickSlotSkill SettingSkill(NewSkillName, Skill.Mana, Skill.Damage, Skill.CoolTime);
 	QuickSkills[SlotNum] = SettingSkill;
+	QuickCoolTime[SlotNum] = Skill.CoolTime;
 	
 }
 
@@ -89,18 +80,4 @@ void UDSSkillManager::RemoveQuickSlot(int SlotNum)
 
 	QuickSkills[SlotNum] = FQuickSlotSkill();
 	
-}
-
-void UDSSkillManager::SpawnWhirlWind(FVector PlayerLocation, FRotator PlayerRotation)
-{
-	AWhirlWind *Skill = GetWorld()->SpawnActor<AWhirlWind>(AWhirlWind::StaticClass(), PlayerLocation, PlayerRotation);
-	if (Skill)
-	{
-		UDSMeleeSkillComponent *SkillComponent = Cast<UDSMeleeSkillComponent>(Skill->GetComponentByClass(UDSMeleeSkillComponent::StaticClass()));
-		if (SkillComponent)
-		{
-			SkillActor = Skill;
-			SkillActor->OnDestroyed.AddDynamic(this, &UDSSkillManager::DeActivateSkill);
-		}
-	}
 }

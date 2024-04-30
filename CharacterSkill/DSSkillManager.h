@@ -9,16 +9,6 @@
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnMpChangedDelegate, float);
 
-enum Skills
-{
-	WhirlWind = 0,
-};
-
-// Skills GetSkillTypeFromName(FName SkillName)
-// {
-// 	if(SkillName == TEXT("WhirlWind")) return WhirlWind;
-// };
-
 struct FQuickSlotSkill
 {
 	FName SkillName;
@@ -81,19 +71,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill)
 	AActor *SkillActor;
 
-	/* Need to Change -> Go CharacterSkill */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill)
-	TObjectPtr<class UBlueprint> WhirlWind;
-
 	// For QuickSlot Skill
 protected:
 	TArray<FQuickSlotSkill> QuickSkills;
 	TArray<FName> QuickSkillName;
+	TArray<float> QuickCoolTime;
 
 	virtual void AddQuickSlot(FName NewSkillName, int SkillNum) override;
 	virtual void RemoveQuickSlot(int SkillNum) override;
-
-	// Spawn Skills
-protected:
-	void SpawnWhirlWind(FVector PlayerLocation, FRotator PlayerRotation);
 };

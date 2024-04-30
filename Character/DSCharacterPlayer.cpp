@@ -96,10 +96,10 @@ ADSCharacterPlayer::ADSCharacterPlayer()
 
     Weapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Weapon"));
     Weapon->SetupAttachment(GetMesh(), TEXT("hand_rSocket"));
-    Weapon->SetRelativeScale3D(FVector(1.f, 1.5f, 2.f));
+    Weapon->SetRelativeScale3D(FVector(1.f, 1.f, 1.f));
 
     // Weapon Static Mesh
-    static ConstructorHelpers::FObjectFinder<UStaticMesh> WeaponRef(TEXT("/Script/Engine.StaticMesh'/Game/DarkSorcery/Character/Weapon/CardboardSword.CardboardSword'"));
+    static ConstructorHelpers::FObjectFinder<UStaticMesh> WeaponRef(TEXT("/Script/Engine.StaticMesh'/Game/DarkSorcery/Character/Weapon/Cardboard_Buster_Sword.Cardboard_Buster_Sword'"));
     if (WeaponRef.Object)
     {
         Weapon->SetStaticMesh(WeaponRef.Object);
@@ -108,8 +108,8 @@ ADSCharacterPlayer::ADSCharacterPlayer()
 
     WeaponBoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("WeaponBoxCollision"));
     WeaponBoxCollision->SetupAttachment(Weapon);
-    WeaponBoxCollision->SetRelativeScale3D(FVector(0.25f, 0.25f, 1.f));
-    WeaponBoxCollision->SetRelativeLocation(FVector(0.f, 0.f, 48.5f));
+    WeaponBoxCollision->SetRelativeScale3D(FVector(0.25f, 0.5f, 2.25f));
+    WeaponBoxCollision->SetRelativeLocation(FVector(0.f, 0.f, 90.f));
     WeaponBoxCollision->bHiddenInGame = false;
 
     // Attack Section
@@ -371,7 +371,6 @@ void ADSCharacterPlayer::ActivateSkill()
     FQuickSlotSkill Skill = SkillManager->GetActivateSkill(SkillNum);
     if (SkillName != "")
     {
-        GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Skill Name: %s"), *SkillName.ToString()));
         float UseMana = Skill.Mana;
         if (UseMana != 0.f && SkillManager->GetNowMp() >= UseMana)
         {
@@ -380,25 +379,12 @@ void ADSCharacterPlayer::ActivateSkill()
             UAnimInstance *AnimInstance = GetMesh()->GetAnimInstance();
             if (AnimInstance && SkillMontage)
             {
-                AnimInstance->Montage_Play(SkillMontage, 4.f);
+                AnimInstance->Montage_Play(SkillMontage, 1.f);
                 AnimInstance->Montage_JumpToSection(SkillName, SkillMontage);
             }
         }
     }
     // GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Last Key Pressed: %s"), *PressedKey.ToString()));
-    // FDSCharacterSkillData Skill = UDSGameSingleton::Get().GetCharacterSkillData(TEXT("WhirlWind"));
-    // float UseMana = Skill.Mana;
-    // if (UseMana != 0.f && SkillManager->GetNowMp() >= UseMana)
-    // {
-    //     SkillManager->SetMp(UseMana);
-    //     SkillManager->ActivateSkill(GetActorLocation(), GetActorRotation());
-    //     UAnimInstance *AnimInstance = GetMesh()->GetAnimInstance();
-    //     if (AnimInstance && SkillMontage)
-    //     {
-    //         AnimInstance->Montage_Play(SkillMontage, 4.f);
-    //         AnimInstance->Montage_JumpToSection(FName("WhirlWind"), SkillMontage);
-    //     }
-    // }
 }
 
 void ADSCharacterPlayer::SetComboWarping()

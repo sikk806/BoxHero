@@ -99,7 +99,6 @@ bool UDSHUDWidget::SetSkillWidgetVisibility()
 
 FReply UDSHUDWidget::NativeOnPreviewKeyDown(const FGeometry &InGeometry, const FKeyEvent &InKeyEvent)
 {
-    GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, TEXT("HUD?"));
     FEventReply Reply;
     Reply.NativeReply = Super::NativeOnPreviewKeyDown(InGeometry, InKeyEvent);
     if (InKeyEvent.GetKey() == EKeys::K)
