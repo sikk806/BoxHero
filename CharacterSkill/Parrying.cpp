@@ -21,5 +21,5 @@ void AParrying::BeginPlay()
 
 void AParrying::Tick(float DeltaTime)
 {
-    Tick(DeltaTime);
+    Super::Tick(DeltaTime);
 }

@@ -15,7 +15,9 @@ public:
         }
         else if(SkillName == FName(TEXT("Parrying")))
         {
-            return World->SpawnActor<AParrying>(AParrying::StaticClass(), PlayerLocation, PlayerRotation);
+            FVector SpawnLocation = PlayerLocation;
+            SpawnLocation.X += 200.f;
+            return World->SpawnActor<AParrying>(AParrying::StaticClass(), SpawnLocation, PlayerRotation);
         }
 
         return nullptr;

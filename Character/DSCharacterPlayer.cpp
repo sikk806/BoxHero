@@ -379,7 +379,7 @@ void ADSCharacterPlayer::ActivateSkill()
             UAnimInstance *AnimInstance = GetMesh()->GetAnimInstance();
             if (AnimInstance && SkillMontage)
             {
-                AnimInstance->Montage_Play(SkillMontage, 1.f);
+                AnimInstance->Montage_Play(SkillMontage, 4.f);
                 AnimInstance->Montage_JumpToSection(SkillName, SkillMontage);
             }
         }
