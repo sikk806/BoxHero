@@ -3,20 +3,31 @@
 
 #include "CharacterSkill/Parrying.h"
 #include "CharacterSkill/ParryingComponent.h"
-#include "Parrying.h"
+#include "CharacterSkill/ParryingSceneComponent.h"
+
+#include "Components/BoxComponent.h"
 
 AParrying::AParrying()
 {
-    
-	Parrying = CreateDefaultSubobject<UParryingComponent>(TEXT("ParryingComponent"));
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("ParryingBox"));
+	BoxComponent->SetupAttachment(RootComponent);
+	BoxComponent->bHiddenInGame = false;
+
+	ParryingActorComponent = CreateDefaultSubobject<UParryingComponent>(TEXT("ParryingComponent"));
+	ParryingSceneComponent = CreateDefaultSubobject<UParryingSceneComponent>(TEXT("ParryingEffect"));	
+
+	ParryingSceneComponent->SetupAttachment(RootComponent);
 
 	//CheckTime = 0.f;
-	UseMana = Parrying->Mana;
+	UseMana = ParryingActorComponent->Mana;
 }
 
 void AParrying::BeginPlay()
 {
     Super::BeginPlay();
+
+	//ParryingSceneComponent->SetWorldLocation(BoxComponent->GetComponentLocation());
 }
 
 void AParrying::Tick(float DeltaTime)

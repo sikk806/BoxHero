@@ -6,12 +6,13 @@
 #include "GameFramework/Character.h"
 #include "Interface/DSCastDelayInterface.h"
 #include "Interface/DSCharacterWidgetInterface.h"
+#include "Interface/DSPauseMontageInterface.h"
 #include "DSCharacterBase.generated.h"
 
 DECLARE_MULTICAST_DELEGATE_TwoParams(FOnHitDelegate, AActor * /* Actor Of HittedActor */, FHitResult & /* Actor Hit Result */);
 
 UCLASS()
-class DARKSORCERY_API ADSCharacterBase : public ACharacter, public IDSCastDelayInterface, public IDSCharacterWidgetInterface
+class DARKSORCERY_API ADSCharacterBase : public ACharacter, public IDSCastDelayInterface, public IDSCharacterWidgetInterface, public IDSPauseMontageInterface
 {
 	GENERATED_BODY()
 
@@ -56,6 +57,7 @@ protected:
 	virtual void SetDead();
 	void PlayDeadMontage();
 	bool IsMontagePlaying(UAnimMontage *AnimMontage);
+	virtual void PauseMontage() override;
 
 	float DeadEventTime = 5.f;
 

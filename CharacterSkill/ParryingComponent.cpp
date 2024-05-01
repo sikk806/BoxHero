@@ -4,17 +4,8 @@
 #include "CharacterSkill/ParryingComponent.h"
 #include "GameData/DSGameSingleton.h"
 
-#include "NiagaraComponent.h"
-
 UParryingComponent::UParryingComponent()
 {
-    SkillEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("SkillEffect"));
-	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> SkillEffectRef(TEXT("/Script/Niagara.NiagaraSystem'/Game/DarkSorcery/Character/Skills/Parrying/NS_Warrior_Parrying.NS_Warrior_Parrying'"));
-	if (SkillEffectRef.Object)
-	{
-		SkillEffect->SetAsset(SkillEffectRef.Object);
-	}
-
 	SkillName = FName(TEXT("Parrying"));
 }
 
@@ -31,5 +22,4 @@ void UParryingComponent::BeginPlay()
 	HitCount = Skill.HitCount;
 	CoolTime = Skill.CoolTime;
 
-    SkillEffect->SetActive(true);
 }

@@ -58,7 +58,7 @@ ADSCharacterBase::ADSCharacterBase()
 	HpBar->SetRelativeLocation(FVector(0.f, 0.f, 200.f));
 
 	static ConstructorHelpers::FClassFinder<UUserWidget> HpBarRef(TEXT("/Game/DarkSorcery/UI/WBP_HpBar.WBP_HpBar_C"));
-	if(HpBarRef.Class)
+	if (HpBarRef.Class)
 	{
 		HpBar->SetWidgetClass(HpBarRef.Class);
 		HpBar->SetWidgetSpace(EWidgetSpace::Screen);
@@ -144,6 +144,20 @@ bool ADSCharacterBase::IsMontagePlaying(UAnimMontage *AnimMontage)
 		return AnimInstance->Montage_IsPlaying(AnimMontage);
 	}
 	return false;
+}
+
+void ADSCharacterBase::PauseMontage()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, TEXT("Pause Montage"));
+	UAnimInstance *AnimInstance = GetMesh()->GetAnimInstance();
+	UAnimMontage *MontageInstance = AnimInstance->GetCurrentActiveMontage();
+	AnimInstance->Montage_Pause(MontageInstance);
+
+	FTimerHandle ResumeMontageTimer;
+	GetWorld()->GetTimerManager().SetTimer(ResumeMontageTimer, FTimerDelegate::CreateLambda([AnimInstance, MontageInstance]()
+																							{ GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, TEXT("Pause Montage"));
+																								AnimInstance->Montage_Resume(MontageInstance); }),
+										   2.f, false);
 }
 
 void ADSCharacterBase::CastDelay()

@@ -7,12 +7,12 @@
 
 UWhirlWindComponent::UWhirlWindComponent()
 {
-	SkillEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("SkillEffect"));
-	static ConstructorHelpers::FObjectFinder<UNiagaraSystem> SkillEffectRef(TEXT("/Script/Niagara.NiagaraSystem'/Game/DarkSorcery/Character/Skills/WhirlWind/NS_Warrior_Spin.NS_Warrior_Spin'"));
-	if (SkillEffectRef.Object)
-	{
-		SkillEffect->SetAsset(SkillEffectRef.Object);
-	}
+	// SkillEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("SkillEffect"));
+	// static ConstructorHelpers::FObjectFinder<UNiagaraSystem> SkillEffectRef(TEXT("/Script/Niagara.NiagaraSystem'/Game/DarkSorcery/Character/Skills/WhirlWind/NS_Warrior_Spin.NS_Warrior_Spin'"));
+	// if (SkillEffectRef.Object)
+	// {
+	// 	SkillEffect->SetAsset(SkillEffectRef.Object);
+	// }
 
 	SkillName = FName(TEXT("WhirlWind"));
 }
@@ -30,5 +30,5 @@ void UWhirlWindComponent::BeginPlay()
 	HitCount = Skill.HitCount;
 	CoolTime = Skill.CoolTime;
 
-	SkillEffect->SetActive(true);
+	//SkillEffect->SetActive(true);
 }

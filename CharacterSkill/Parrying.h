@@ -28,10 +28,13 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	USceneComponent *SceneComponent;
+	TObjectPtr<class UBoxComponent> BoxComponent;
 
 	// Skill Option
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill, Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UParryingComponent> Parrying;
+	TObjectPtr<class UParryingComponent> ParryingActorComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UParryingSceneComponent> ParryingSceneComponent;
 };

@@ -15,9 +15,8 @@ public:
         }
         else if(SkillName == FName(TEXT("Parrying")))
         {
-            FVector SpawnLocation = PlayerLocation;
-            SpawnLocation.X += 200.f;
-            return World->SpawnActor<AParrying>(AParrying::StaticClass(), SpawnLocation, PlayerRotation);
+            GEngine->AddOnScreenDebugMessage(-1, 60.f, FColor::Yellow, FString::Printf(TEXT("Position: %s"), *PlayerLocation.ToString()));
+            return World->SpawnActor<AParrying>(AParrying::StaticClass(), PlayerLocation, PlayerRotation);
         }
 
         return nullptr;
