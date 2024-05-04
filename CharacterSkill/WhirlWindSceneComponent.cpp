@@ -1,22 +1,25 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "CharacterSkill/ParryingSceneComponent.h"
+
+#include "CharacterSkill/WhirlWindSceneComponent.h"
 #include "NiagaraComponent.h"
 
-UParryingSceneComponent::UParryingSceneComponent()
+
+UWhirlWindSceneComponent::UWhirlWindSceneComponent()
 {
     SkillEffect = CreateDefaultSubobject<UNiagaraComponent>(TEXT("SkillEffect"));
-    static ConstructorHelpers::FObjectFinder<UNiagaraSystem> SkillEffectRef(TEXT("/Script/Niagara.NiagaraSystem'/Game/DarkSorcery/Character/Skills/Parrying/NS_Warrior_Parrying.NS_Warrior_Parrying'"));
+    static ConstructorHelpers::FObjectFinder<UNiagaraSystem> SkillEffectRef(TEXT("/Script/Niagara.NiagaraSystem'/Game/DarkSorcery/Character/Skills/WhirlWind/NS_Warrior_Spin.NS_Warrior_Spin'"));
     if (SkillEffectRef.Object)
     {
         SkillEffect->SetAsset(SkillEffectRef.Object);
     }
     SkillEffect->SetupAttachment(GetAttachmentRoot());
 }
-void UParryingSceneComponent::BeginPlay()
+
+void UWhirlWindSceneComponent::BeginPlay()
 {
     Super::BeginPlay();
     
-    SkillEffect->SetRelativeLocation(FVector(100.f, 0.f, 0.f));
+    SkillEffect->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
     SkillEffect->SetActive(true);
 }

@@ -2,6 +2,7 @@
 
 #include "CharacterSkill/WhirlWind.h"
 #include "CharacterSkill/WhirlWindComponent.h"
+#include "CharacterSkill/WhirlWindSceneComponent.h"
 #include "Character/DSCharacterEnemy.h"
 
 #include "NiagaraFunctionLibrary.h"
@@ -15,10 +16,14 @@ AWhirlWind::AWhirlWind()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
-	WhirlWind = CreateDefaultSubobject<UWhirlWindComponent>(TEXT("WhirlWindComponent"));
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	WhirlWindActorComponent = CreateDefaultSubobject<UWhirlWindComponent>(TEXT("WhirlWindComponent"));
+	WhirlWindSceneComponent = CreateDefaultSubobject<UWhirlWindSceneComponent>(TEXT("WhirlWindEffect"));
+
+	WhirlWindSceneComponent->SetupAttachment(RootComponent);
 
 	CheckTime = 0.f;
-	UseMana = WhirlWind->Mana;
+	UseMana = WhirlWindActorComponent->Mana;
 }
 
 // Called when the game starts or when spawned
@@ -53,7 +58,7 @@ void AWhirlWind::Tick(float DeltaTime)
 					if(Enemy)
 					{
 						FDamageEvent DamageEvent;
-						Enemy->TakeDamage(WhirlWind->Damage, DamageEvent, GetInstigatorController(), this);
+						Enemy->TakeDamage(WhirlWindActorComponent->Damage, DamageEvent, GetInstigatorController(), this);
 					}
 				}
 			}

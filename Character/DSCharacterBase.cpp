@@ -20,7 +20,7 @@ ADSCharacterBase::ADSCharacterBase()
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 
-	// Capsule
+	// Capsule - Normal Character Size. If you want to change this, have to recoding at Child class constructor.
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.f);
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Pawn"));
 

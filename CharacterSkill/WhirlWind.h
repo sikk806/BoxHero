@@ -30,7 +30,10 @@ protected:
 // Skill Option
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill, Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UWhirlWindComponent> WhirlWind;
+	TObjectPtr<class UWhirlWindComponent> WhirlWindActorComponent;
+
+		UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill, Meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UWhirlWindSceneComponent> WhirlWindSceneComponent;
 
 	FTimerHandle DestroyTimer;
 

@@ -32,7 +32,7 @@ ADSCharacterTrashMob::ADSCharacterTrashMob()
 	}
 
 	SkeletalMeshWeapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Weapon"));
-    SkeletalMeshWeapon->SetupAttachment(GetMesh(), TEXT("hand_rSocket"));
+    SkeletalMeshWeapon->SetupAttachment(GetMesh(), TEXT("hand_rSocketReverse"));
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh> WeaponRef(TEXT("/Script/Engine.SkeletalMesh'/Game/DarkSorcery/Enemy/TrashMob/Weapon/Hammer/SK_Forging_ForgeHammer02.SK_Forging_ForgeHammer02'"));
 	if(WeaponRef.Object)
 	{
