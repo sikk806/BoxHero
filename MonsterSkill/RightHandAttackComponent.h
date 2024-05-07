@@ -7,11 +7,15 @@
 #include "RightHandAttackComponent.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class DARKSORCERY_API URightHandAttackComponent : public UDSCharacterSkillComponent
 {
 	GENERATED_BODY()
-	
+
+public:
+	URightHandAttackComponent();
+
+	virtual void BeginPlay() override;
 };

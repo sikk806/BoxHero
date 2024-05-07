@@ -2,4 +2,12 @@
 
 
 #include "MonsterSkill/RightHandAttackComponent.h"
+#include "RightHandAttackComponent.h"
 
+URightHandAttackComponent::URightHandAttackComponent()
+{
+}
+
+void URightHandAttackComponent::BeginPlay()
+{
+}
