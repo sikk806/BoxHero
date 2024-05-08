@@ -25,7 +25,7 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	USceneComponent *SceneComponent;
+	TObjectPtr<class USceneComponent> SceneComponent;
 
 	// Skill Option
 protected:

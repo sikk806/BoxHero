@@ -2,12 +2,13 @@
 
 
 #include "MonsterSkill/RightHandAttackComponent.h"
-#include "RightHandAttackComponent.h"
 
 URightHandAttackComponent::URightHandAttackComponent()
 {
+    SetProjectileMaxSpeed(0.f);
 }
 
 void URightHandAttackComponent::BeginPlay()
 {
+
 }

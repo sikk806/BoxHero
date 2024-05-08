@@ -14,6 +14,11 @@ class DARKSORCERY_API URightHandAttackSceneComponent : public UDSCharacterSkillS
 {
 	GENERATED_BODY()
 
+public:
+	URightHandAttackSceneComponent();
+
+	virtual void BeginPlay() override;
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UNiagaraComponent> SkillEffect;

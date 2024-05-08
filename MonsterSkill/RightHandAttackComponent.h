@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CharacterSkill/DSCharacterSkillComponent.h"
+#include "CharacterSkill/DSProjectileSkillComponent.h"
 #include "RightHandAttackComponent.generated.h"
 
 /**
  *
  */
 UCLASS()
-class DARKSORCERY_API URightHandAttackComponent : public UDSCharacterSkillComponent
+class DARKSORCERY_API URightHandAttackComponent : public UDSProjectileSkillComponent
 {
 	GENERATED_BODY()
 
