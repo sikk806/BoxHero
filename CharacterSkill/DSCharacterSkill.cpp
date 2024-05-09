@@ -19,7 +19,6 @@ void ADSCharacterSkill::BeginPlay()
 	
 }
 
-
 void ADSCharacterSkill::DestroyActor()
 {
 	Destroy();

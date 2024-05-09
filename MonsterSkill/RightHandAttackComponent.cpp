@@ -5,7 +5,7 @@
 
 URightHandAttackComponent::URightHandAttackComponent()
 {
-    SetProjectileMaxSpeed(0.f);
+    
 }
 
 void URightHandAttackComponent::BeginPlay()

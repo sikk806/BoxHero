@@ -17,9 +17,7 @@ class DARKSORCERY_API UDSProjectileSkillComponent : public UDSCharacterSkillComp
 public:
 	UDSProjectileSkillComponent();
 
-protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile", meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UProjectileMovementComponent> ProjectileMovement;
+	float Speed;
 
-	void SetProjectileMaxSpeed(float Speed);
+
 };

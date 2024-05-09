@@ -5,10 +5,5 @@
 
 UDSProjectileSkillComponent::UDSProjectileSkillComponent()
 {
-    ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
-}
-
-void UDSProjectileSkillComponent::SetProjectileMaxSpeed(float Speed)
-{
-    ProjectileMovement->MaxSpeed = Speed;
+    
 }

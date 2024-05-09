@@ -33,6 +33,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<class USphereComponent> SphereComponent;
 
+	void SetSkillSpeed(float Speed);
+
 	// Skill Option
 public:
 	float ThrowTime;

@@ -23,6 +23,12 @@ public:
 	FORCEINLINE void SetMana(float Mana) { UseMana = Mana; }
 	FORCEINLINE float GetMana() { return UseMana; }
 
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<class UProjectileMovementComponent> ProjectileMovement;
+
+	void SetMovementSpeed(float Speed);
+
 	// Skill Option
 protected:
 	float UseMana;

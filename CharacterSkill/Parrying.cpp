@@ -27,6 +27,8 @@ void AParrying::BeginPlay()
 {
     Super::BeginPlay();
 
+	SetActorLocation(FVector(-2000.f, 0.f, 100.f));
+
 	//ParryingSceneComponent->SetWorldLocation(BoxComponent->GetComponentLocation());
 }
 
