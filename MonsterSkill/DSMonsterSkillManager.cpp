@@ -32,7 +32,7 @@ void UDSMonsterSkillManager::TickComponent(float DeltaTime, ELevelTick TickType,
 	// ...
 }
 
-void UDSMonsterSkillManager::ActivateSkill(FVector PlayerLocation, FRotator PlayerRotation, int SkillNum)
+void UDSMonsterSkillManager::ActivateSkill(FVector PlayerLocation, FRotator PlayerRotation)
 {
 	
 }

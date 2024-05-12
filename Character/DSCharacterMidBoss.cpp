@@ -4,6 +4,8 @@
 #include "AI/DSMidBossAIController.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
+
 
 ADSCharacterMidBoss::ADSCharacterMidBoss()
 {
@@ -11,7 +13,7 @@ ADSCharacterMidBoss::ADSCharacterMidBoss()
 	GetCharacterMovement()->MaxWalkSpeed = 600.f;
 
 	// Capsule
-	GetCapsuleComponent()->InitCapsuleSize(150.f, 320.f);
+	GetCapsuleComponent()->InitCapsuleSize(100.f, 250.f);
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Pawn"));
 
 	// Mesh Setting
@@ -76,6 +78,8 @@ void ADSCharacterMidBoss::BeginPlay()
 
 void ADSCharacterMidBoss::Tick(float DeltaTime)
 {
+	Super::Tick(DeltaTime);
+
 }
 
 float ADSCharacterMidBoss::GetAIPatrolRadius()
@@ -90,7 +94,7 @@ float ADSCharacterMidBoss::GetAIDetectedRange()
 
 float ADSCharacterMidBoss::GetAIAttackRange()
 {
-	return 0.0f;
+	return 1000.0f;
 }
 
 float ADSCharacterMidBoss::GetAITurnSpeed()
@@ -104,4 +108,18 @@ void ADSCharacterMidBoss::SetAttackDelegate(const FAICharacterAttackFinished &In
 
 void ADSCharacterMidBoss::AttackByAI()
 {
+	
 }
+
+/*
+AAIController* AIController = Cast<AAIController>(GetController());
+	if(AIController)
+	{
+		UBlackboardComponent* Blackboard = AIController->GetBlackboardComponent();
+		if(Blackboard)
+		{
+			float Value = Blackboard->GetValueAsFloat(TEXT("SkillAttackRange"));
+			GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Distance : %f"), Value));
+		}
+	}
+*/

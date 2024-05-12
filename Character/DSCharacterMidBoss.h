@@ -50,4 +50,5 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Skill, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UAnimMontage> SkillMontage;
+
 };

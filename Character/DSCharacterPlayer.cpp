@@ -278,7 +278,7 @@ void ADSCharacterPlayer::ComboAttackBegin()
     // GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
 
     // Animation Setting
-    const float AttackSpeedRate = 1.75f;
+    const float AttackSpeedRate = 1.f;
     UAnimInstance *AttackInstance = GetMesh()->GetAnimInstance();
 
     if (AttackInstance)
