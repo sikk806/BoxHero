@@ -43,10 +43,13 @@ public:
 	virtual void SetAttackDelegate(const FAICharacterAttackFinished &InOnAttackFinished) override;
 	virtual void AttackByAI() override;
 
+	protected:
+	float AIAttackRange;
+
 	// Attack Effect
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill, Meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<class UDSSkillManager> SkillManager;
+	TObjectPtr<class UDSMidBossSkillManager> SkillManager;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Skill, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UAnimMontage> SkillMontage;

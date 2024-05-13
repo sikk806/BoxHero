@@ -6,7 +6,6 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
-
 ADSCharacterMidBoss::ADSCharacterMidBoss()
 {
 	// Movement
@@ -64,8 +63,12 @@ ADSCharacterMidBoss::ADSCharacterMidBoss()
 		GetMesh()->SetAnimInstanceClass(AnimInstanceClassRef.Class);
 	}
 
+	SkillManager = CreateDefaultSubobject<UDSMidBossSkillManager>(TEXT("SkillManager"));
+
 	AIControllerClass = ADSMidBossAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	AIAttackRange = 0.f;
 }
 
 void ADSCharacterMidBoss::BeginPlay()
@@ -74,12 +77,13 @@ void ADSCharacterMidBoss::BeginPlay()
 
 	SkeletalMeshDrill->Play(true);
 	SkeletalMeshRing->Play(true);
+
+	AIAttackRange = SkillManager->GetNextSkillRange();
 }
 
 void ADSCharacterMidBoss::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 float ADSCharacterMidBoss::GetAIPatrolRadius()
@@ -94,7 +98,7 @@ float ADSCharacterMidBoss::GetAIDetectedRange()
 
 float ADSCharacterMidBoss::GetAIAttackRange()
 {
-	return 1000.0f;
+	return AIAttackRange;
 }
 
 float ADSCharacterMidBoss::GetAITurnSpeed()
@@ -104,22 +108,18 @@ float ADSCharacterMidBoss::GetAITurnSpeed()
 
 void ADSCharacterMidBoss::SetAttackDelegate(const FAICharacterAttackFinished &InOnAttackFinished)
 {
+	// temporary Delegate.
+	// Need Attack Begin & Attack End.
+	// When Attack Montage is End, You Need this Code.
+	InOnAttackFinished.ExecuteIfBound();
 }
 
 void ADSCharacterMidBoss::AttackByAI()
 {
-	
-}
+	SkillManager->SettingNextSkill();
+	AIAttackRange = SkillManager->GetNextSkillRange();
 
-/*
-AAIController* AIController = Cast<AAIController>(GetController());
-	if(AIController)
-	{
-		UBlackboardComponent* Blackboard = AIController->GetBlackboardComponent();
-		if(Blackboard)
-		{
-			float Value = Blackboard->GetValueAsFloat(TEXT("SkillAttackRange"));
-			GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Distance : %f"), Value));
-		}
-	}
-*/
+	// temporary Delegate.
+	// Need Attack Begin & Attack End.
+	// When Attack Montage is End, You Need this Code.
+}

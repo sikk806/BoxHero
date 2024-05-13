@@ -7,11 +7,11 @@
 #include "DSMonsterSkillManager.generated.h"
 
 USTRUCT(BlueprintType)
-struct FMyStruct
+struct FSkillAttackInfo
 {
 	GENERATED_BODY()
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill, Meta = (AllowPrivateAccess = "true"))
-	int SkillNo;
+	int32 SkillNo;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill, Meta = (AllowPrivateAccess = "true"))
 	FName SkillName;
@@ -19,8 +19,9 @@ struct FMyStruct
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill, Meta = (AllowPrivateAccess = "true"))
 	float AttackRangeWithRadius;
 
+	FSkillAttackInfo() : SkillNo(0), SkillName(NAME_None), AttackRangeWithRadius(-1.f) {}
 
-
+	FSkillAttackInfo(int32 Num, FName Name, float Range) : SkillNo(Num), SkillName(Name), AttackRangeWithRadius(Range) {}
 };
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -47,6 +48,5 @@ public:
 	virtual void DeActivateSkill(AActor *DestroySkill);
 
 protected:
-	TArray<FName> MonsterSkillSet;
-	
+	TArray<FSkillAttackInfo> MonsterSkillSet;
 };

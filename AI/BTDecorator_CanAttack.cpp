@@ -36,9 +36,10 @@ bool UBTDecorator_CanAttack::CalculateRawConditionValue(UBehaviorTreeComponent &
     }
 
     float DistanceToTarget = ControllingPawn->GetDistanceTo(Target);
-    GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Distance : %f"), DistanceToTarget));
     float AttackRangeWithRadius = AIPawn->GetAIAttackRange();
     bResult = (DistanceToTarget <= AttackRangeWithRadius);
+
+    GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("D2T : %f, Distance : %f, bResult : %d"), DistanceToTarget, AttackRangeWithRadius, bResult));
 
     return bResult;
 }

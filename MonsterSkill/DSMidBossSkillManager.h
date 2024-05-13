@@ -6,9 +6,6 @@
 #include "MonsterSkill/DSMonsterSkillManager.h"
 #include "DSMidBossSkillManager.generated.h"
 
-/**
- *
- */
 UCLASS()
 class DARKSORCERY_API UDSMidBossSkillManager : public UDSMonsterSkillManager
 {
@@ -21,5 +18,15 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	void SettingSkill(FName SkillName);
+public:
+	void SettingNextSkill();
+	FORCEINLINE float GetNextSkillRange() { return NextSkillRange; }
+
+protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SkillSet", Meta = (AllowPrivateAccess = "true"))
+	FName NextSkillName;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SkillSet", Meta = (AllowPrivateAccess = "true"))
+	float NextSkillRange;
+
 };

@@ -8,7 +8,7 @@
 
 ADSMidBossAIController::ADSMidBossAIController()
 {
-        const ConstructorHelpers::FObjectFinder<UBlackboardData> BBAssetRef(TEXT("/Script/AIModule.BlackboardData'/Game/DarkSorcery/Enemy/MidBoss/AI/BB_MidBoss.BB_MidBoss'"));
+    const ConstructorHelpers::FObjectFinder<UBlackboardData> BBAssetRef(TEXT("/Script/AIModule.BlackboardData'/Game/DarkSorcery/Enemy/MidBoss/AI/BB_MidBoss.BB_MidBoss'"));
     if(BBAssetRef.Object)
     {
         BBAsset = BBAssetRef.Object;

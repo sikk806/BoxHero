@@ -20,6 +20,9 @@ public:
 	void RunAI();
 	void StopAI();
 
+public:
+	UBlackboardData* GetBBAsset() { return BBAsset; }
+
 protected:
 	virtual void OnPossess(APawn *InPawn) override;
 	
