@@ -5,6 +5,7 @@
 
 #include "GameFramework/CharacterMovementComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "DSCharacterMidBoss.h"
 
 ADSCharacterMidBoss::ADSCharacterMidBoss()
 {
@@ -78,6 +79,7 @@ void ADSCharacterMidBoss::BeginPlay()
 	SkeletalMeshDrill->Play(true);
 	SkeletalMeshRing->Play(true);
 
+
 	AIAttackRange = SkillManager->GetNextSkillRange();
 }
 
@@ -108,18 +110,28 @@ float ADSCharacterMidBoss::GetAITurnSpeed()
 
 void ADSCharacterMidBoss::SetAttackDelegate(const FAICharacterAttackFinished &InOnAttackFinished)
 {
-	// temporary Delegate.
-	// Need Attack Begin & Attack End.
-	// When Attack Montage is End, You Need this Code.
-	InOnAttackFinished.ExecuteIfBound();
+	OnAttackFinished = InOnAttackFinished;
 }
 
 void ADSCharacterMidBoss::AttackByAI()
 {
+	AttackBegin();
+
+}
+void ADSCharacterMidBoss::AttackBegin()
+{
+	SkillManager->ActivateSkill(GetActorLocation(), GetActorRotation());
+
 	SkillManager->SettingNextSkill();
 	AIAttackRange = SkillManager->GetNextSkillRange();
+}
 
-	// temporary Delegate.
-	// Need Attack Begin & Attack End.
-	// When Attack Montage is End, You Need this Code.
+void ADSCharacterMidBoss::AttackEnd(UAnimMontage *TargetMontage, bool IsProperlyEnded)
+{
+	NotifyActionEnd();
+}
+
+void ADSCharacterMidBoss::NotifyActionEnd()
+{
+	OnAttackFinished.ExecuteIfBound();
 }

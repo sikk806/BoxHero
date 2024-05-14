@@ -19,12 +19,14 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent &OwnerCom
     APawn* ControllingPawn = Cast<APawn>(OwnerComp.GetAIOwner()->GetPawn());
     if(!ControllingPawn)
     {
+        GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Fail ControllingPawn")));
         return EBTNodeResult::Failed;
     }
 
     IDSEnemyAIInterface* AIPawn = Cast<IDSEnemyAIInterface>(ControllingPawn);
     if(!AIPawn)
     {
+        GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Fail AIPawn")));
         return EBTNodeResult::Failed;
     }
 
@@ -37,6 +39,7 @@ EBTNodeResult::Type UBTTask_Attack::ExecuteTask(UBehaviorTreeComponent &OwnerCom
     );
 
     AIPawn->SetAttackDelegate(OnAttackDelegate);
+
     AIPawn->AttackByAI();
     
     return EBTNodeResult::InProgress;

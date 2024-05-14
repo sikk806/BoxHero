@@ -40,10 +40,14 @@ public:
 	virtual float GetAITurnSpeed() override;
 
 	// Attack AI
+	FAICharacterAttackFinished OnAttackFinished;
 	virtual void SetAttackDelegate(const FAICharacterAttackFinished &InOnAttackFinished) override;
 	virtual void AttackByAI() override;
+	void AttackBegin();
+	void AttackEnd(UAnimMontage *TargetMontage, bool IsProperlyEnded);
+	void NotifyActionEnd();
 
-	protected:
+protected:
 	float AIAttackRange;
 
 	// Attack Effect
@@ -53,5 +57,4 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Skill, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UAnimMontage> SkillMontage;
-
 };

@@ -35,6 +35,8 @@ protected:
 
 	void SetSkillSpeed(float Speed);
 
+	void Detach();
+
 	// Skill Option
 public:
 	float ThrowTime;

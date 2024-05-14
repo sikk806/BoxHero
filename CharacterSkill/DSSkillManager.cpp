@@ -2,7 +2,7 @@
 
 #include "CharacterSkill/DSSkillManager.h"
 
-#include "CharacterSkill/DSMeleeSkillComponent.h"
+#include "CharacterSkill/DSCharacterSkillComponent.h"
 #include "CharacterSkill/DSSkillFactory.h"
 #include "GameData/DSGameSingleton.h"
 

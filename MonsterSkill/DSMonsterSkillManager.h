@@ -41,12 +41,6 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
-	UFUNCTION()
-	virtual void ActivateSkill(FVector MonsterLocation, FRotator MonsterRotation);
-
-	UFUNCTION()
-	virtual void DeActivateSkill(AActor *DestroySkill);
-
 protected:
 	TArray<FSkillAttackInfo> MonsterSkillSet;
 };

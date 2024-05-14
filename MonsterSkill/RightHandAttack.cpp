@@ -23,8 +23,9 @@ ARightHandAttack::ARightHandAttack()
 void ARightHandAttack::BeginPlay()
 {
     // Throw Check With Montage
+    SetActorScale3D(FVector(10.f, 10.f, 10.f));
 
-    SetActorLocation(FVector(-2000.f, 0.f, 100.f));
+    GetWorld()->GetTimerManager().SetTimer(ThrowTimer, this, &ARightHandAttack::Detach, 3.5f, true);
 }
 
 void ARightHandAttack::Tick(float DeltaTime)
@@ -35,4 +36,9 @@ void ARightHandAttack::Tick(float DeltaTime)
 void ARightHandAttack::SetSkillSpeed(float Speed)
 {
     ProjectileMovement->MaxSpeed = Speed;
+}
+
+void ARightHandAttack::Detach()
+{
+   DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 }
