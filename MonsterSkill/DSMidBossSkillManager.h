@@ -23,13 +23,16 @@ public:
 	void SettingNextSkill();
 
 	UFUNCTION()
+	FORCEINLINE FName GetNextSkillName() { return NextSkillName; }
+
+	UFUNCTION()
 	FORCEINLINE float GetNextSkillRange() { return NextSkillRange; }
 
 	UFUNCTION()
-	virtual void ActivateSkill(FVector MonsterLocation, FRotator MonsterRotation);
+	void ActivateSkill(FVector MonsterLocation, FRotator MonsterRotation);
 
 	UFUNCTION()
-	virtual void DeActivateSkill(AActor *DestroySkill);
+	void DeActivateSkill(AActor *DestroySkill);
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SkillSet", Meta = (AllowPrivateAccess = "true"))
@@ -42,4 +45,5 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill)
 	AActor *SkillActor;
 
+	void CopySkill(FName SkillName, FVector MonsterLocation, FRotator MonsterRotation, int Copies);
 };

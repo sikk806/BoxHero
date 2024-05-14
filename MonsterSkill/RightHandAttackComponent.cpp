@@ -5,7 +5,7 @@
 
 URightHandAttackComponent::URightHandAttackComponent()
 {
-    
+    Damage = 100.f;
 }
 
 void URightHandAttackComponent::BeginPlay()

@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Character/DSCharacterMidBoss.h"
+#include "MonsterSkill/DSMidBossSkillManager.h"
 #include "AI/DSMidBossAIController.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
@@ -66,6 +67,12 @@ ADSCharacterMidBoss::ADSCharacterMidBoss()
 
 	SkillManager = CreateDefaultSubobject<UDSMidBossSkillManager>(TEXT("SkillManager"));
 
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> SkillRef(TEXT("/Script/Engine.AnimMontage'/Game/DarkSorcery/Enemy/MidBoss/Animation/AM_MidBossAttack.AM_MidBossAttack'"));
+	if(SkillRef.Object)
+	{
+		SkillMontage = SkillRef.Object;
+	}
+
 	AIControllerClass = ADSMidBossAIController::StaticClass();
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
@@ -78,7 +85,6 @@ void ADSCharacterMidBoss::BeginPlay()
 
 	SkeletalMeshDrill->Play(true);
 	SkeletalMeshRing->Play(true);
-
 
 	AIAttackRange = SkillManager->GetNextSkillRange();
 }
@@ -116,11 +122,22 @@ void ADSCharacterMidBoss::SetAttackDelegate(const FAICharacterAttackFinished &In
 void ADSCharacterMidBoss::AttackByAI()
 {
 	AttackBegin();
-
 }
 void ADSCharacterMidBoss::AttackBegin()
 {
+	float AttackSpeedRate = 1.f;
 	SkillManager->ActivateSkill(GetActorLocation(), GetActorRotation());
+
+	UAnimInstance *AttackInstance = GetMesh()->GetAnimInstance();
+	if(AttackInstance)
+	{
+		AttackInstance->Montage_Play(SkillMontage, AttackSpeedRate);
+		AttackInstance->Montage_JumpToSection(SkillManager->GetNextSkillName(), SkillMontage);
+	}
+
+	FOnMontageEnded EndDelegate;
+	EndDelegate.BindUObject(this, &ADSCharacterMidBoss::AttackEnd);
+	AttackInstance->Montage_SetEndDelegate(EndDelegate, SkillMontage);
 
 	SkillManager->SettingNextSkill();
 	AIAttackRange = SkillManager->GetNextSkillRange();
@@ -128,6 +145,8 @@ void ADSCharacterMidBoss::AttackBegin()
 
 void ADSCharacterMidBoss::AttackEnd(UAnimMontage *TargetMontage, bool IsProperlyEnded)
 {
+	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+
 	NotifyActionEnd();
 }
 
