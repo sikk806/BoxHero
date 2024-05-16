@@ -1,4 +1,4 @@
-![Skill](https://github.com/sikk806/BoxHero/assets/54883267/dfcb202d-b9c3-4e74-a2d0-dc8551fbdf55)# 📦BoxHero
+# 📦BoxHero
 
 #### __프로젝트 명__ : BoxHero (구제목 : DarkSorcery)
 #### __개발 기간__ : 2024 - 03 - 14 ~ (현재 진행중)
