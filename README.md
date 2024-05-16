@@ -31,8 +31,9 @@ ___
 ![Slots](https://github.com/sikk806/BoxHero/assets/54883267/23a50744-6f51-44c3-a39c-6b0b04ad3ac2)
 - Dragging The Slot
 ![DropSlot](https://github.com/sikk806/BoxHero/assets/54883267/8fc7a1df-c69f-43ff-ad51-fc1748999153)
-DSSlotWidget을 따로 구현하여 슬롯이 필요한 모든 곳에 적용 가능하도록 구조 설계
-슬롯을 Drag 시 DSDragSlot 클래스에 데이터를 담고, Drop 시 DSDragSlot의 데이터를 DSSlotWidget에 전달
+##### DSSlotWidget을 따로 구현하여 슬롯이 필요한 모든 곳에 적용 가능하도록 구조 설계
+
+##### 슬롯을 Drag 시 DSDragSlot 클래스에 데이터를 담고, Drop 시 DSDragSlot의 데이터를 DSSlotWidget에 전달
 ![SlotDiagram](https://github.com/sikk806/BoxHero/assets/54883267/67d9167f-362d-408f-aa82-876128e810a2)
 
 2. Skills - Factory & Singleton Pattern
