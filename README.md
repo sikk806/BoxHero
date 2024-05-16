@@ -18,8 +18,9 @@
 | R | Skill 3 |
 | 1 | Item 1 |
 | 2 | Item 2 |
-
-
+___
+## repogitory
+![Repo](https://github.com/sikk806/BoxHero/assets/54883267/945cd3ee-b7e6-42d4-89d9-f2a3d57bce36)
 ___
 ## 아키텍쳐
 ![Architecture](https://github.com/sikk806/BoxHero/assets/54883267/dfe12569-4c8e-47e8-9e94-5f49aab89e0b)
