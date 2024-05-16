@@ -7,4 +7,4 @@
 #### __게임 요약__ : RPG, 보스 레이드, 싱글플레이
 ___
 ## 구현 설명
-1. Character
+[1. Character](https://github.com/sikk806/BoxHero/assets/54883267/dfe12569-4c8e-47e8-9e94-5f49aab89e0b)
