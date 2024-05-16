@@ -5,6 +5,21 @@
 #### __참여 인원__ : 개인 개발
 #### __사용한 기술__ : Unreal Engine 5.1 / C++
 #### __게임 요약__ : RPG, 보스 레이드, 싱글플레이
+#### __조작 방법__
+| Key | Action |
+| ------------ | ------------- |
+| W / Up | move forward |
+| S / Down | move backward |
+| A / Left | move left |
+| D / Right | move right |
+| Space | Jump  |
+| Q | Skill 1 |
+| E | Skill 2 |
+| R | Skill 3 |
+| 1 | Item 1 |
+| 2 | Item 2 |
+
+
 ___
 ## 아키텍쳐
 ![Architecture](https://github.com/sikk806/BoxHero/assets/54883267/dfe12569-4c8e-47e8-9e94-5f49aab89e0b)
