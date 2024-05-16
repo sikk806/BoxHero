@@ -3,7 +3,7 @@
 #### __프로젝트 명__ : BoxHero (구제목 : DarkSorcery)
 #### __개발 기간__ : 2024 - 03 - 14 ~ (현재 진행중)
 #### __참여 인원__ : 개인 개발
-#### __사용한 기술__ : <img src="https://img.shields.io/badge/Unreal_Engine-0E1128?style=for-the-badge&logo=UnrealEngine&logoColor=0E1128">
+#### __사용한 기술__ : Unreal Engine 5.1 / C++
 #### __게임 요약__ : RPG, 보스 레이드, 싱글플레이
 ___
 ## 아키텍쳐
