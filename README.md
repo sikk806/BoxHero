@@ -25,7 +25,7 @@ ___
 ## 아키텍쳐
 ![Architecture](https://github.com/sikk806/BoxHero/assets/54883267/dfe12569-4c8e-47e8-9e94-5f49aab89e0b)
 ___
-## 일부 개발 완료된 사항
+## v0.1 일부 구현 사항
 1. Slots
 - SkillSlot to QuickSkillSlot
 ![Slots](https://github.com/sikk806/BoxHero/assets/54883267/23a50744-6f51-44c3-a39c-6b0b04ad3ac2)
@@ -66,7 +66,7 @@ void ADSCharacterTrashMob::AttackByAI()
 ```
 ___
 ## 구현 예정
-__이후 개발 목표 : 2016 - 06 - 13 데모 개발 완료.__
+__이후 개발 목표 : 2024 - 06 - 13 데모 개발 완료.__
 1. Quick Slot - Item (Potion)
 2. Character(Player, Enemy) Rest Skills
 3. Boss Hidden Pattern
