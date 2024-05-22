@@ -25,7 +25,7 @@
 ADSCharacterPlayer::ADSCharacterPlayer()
 {
     // Debug
-    GetCapsuleComponent()->bHiddenInGame = false;
+    //GetCapsuleComponent()->bHiddenInGame = false;
 
     // Camera
     CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
