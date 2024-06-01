@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "DSCharacterHUDInterface.generated.h"
+#include "DSBossHpInterface.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
-class UDSCharacterHUDInterface : public UInterface
+class UDSBossHpInterface : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -16,13 +16,12 @@ class UDSCharacterHUDInterface : public UInterface
 /**
  * 
  */
-class DARKSORCERY_API IDSCharacterHUDInterface
+// Add this which the enemy is not TrashMob.
+// Have to Visible the HpBar at Main Character HUD Enemy Hpbar.
+class DARKSORCERY_API IDSBossHpInterface
 {
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	virtual void SetupHUDWidget(class UDSHUDWidget* InHUDWidget) = 0;
-	virtual UDSHUDWidget* GetHUDWidget() = 0;
-
 };

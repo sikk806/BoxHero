@@ -4,6 +4,7 @@
 #include "CharacterSkill/WhirlWindComponent.h"
 #include "CharacterSkill/WhirlWindSceneComponent.h"
 #include "Character/DSCharacterEnemy.h"
+#include "Character/DSCharacterNamed.h"
 
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraComponent.h"
@@ -15,7 +16,7 @@ AWhirlWind::AWhirlWind()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	
+
 	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 	WhirlWindActorComponent = CreateDefaultSubobject<UWhirlWindComponent>(TEXT("WhirlWindComponent"));
 	WhirlWindSceneComponent = CreateDefaultSubobject<UWhirlWindSceneComponent>(TEXT("WhirlWindEffect"));
@@ -49,26 +50,34 @@ void AWhirlWind::Tick(float DeltaTime)
 		bool HitDetected = GetWorld()->SweepMultiByChannel(OutHitResult, GetActorLocation(), GetActorLocation(), FQuat::Identity, ECC_Pawn, FCollisionShape::MakeSphere(Radius), Params);
 		if (HitDetected)
 		{
-			for(const FHitResult& Hit : OutHitResult)
+			for (const FHitResult &Hit : OutHitResult)
 			{
-				AActor* HitActor = Hit.GetActor();
-				if(HitActor)
+				AActor *HitActor = Hit.GetActor();
+				if (HitActor)
 				{
-					ADSCharacterEnemy* Enemy = Cast<ADSCharacterEnemy>(HitActor);
-					if(Enemy)
+					ADSCharacterEnemy *Enemy = Cast<ADSCharacterEnemy>(HitActor);
+					if (Enemy)
 					{
 						FDamageEvent DamageEvent;
-						Enemy->TakeDamage(WhirlWindActorComponent->Damage, DamageEvent, GetInstigatorController(), this);
+						ADSCharacterNamed *Named = Cast<ADSCharacterNamed>(Enemy);
+						if (Named)
+						{
+							Named->TakeDamage(WhirlWindActorComponent->Damage, DamageEvent, OwnerController, this);
+						}
+						else
+						{
+							Enemy->TakeDamage(WhirlWindActorComponent->Damage, DamageEvent, OwnerController, this);
+						}
 					}
 				}
 			}
-// #if ENABLE_DRAW_DEBUG
+			// #if ENABLE_DRAW_DEBUG
 
-// 			FColor DrawColor = HitDetected ? FColor::Green : FColor::Red;
+			// 			FColor DrawColor = HitDetected ? FColor::Green : FColor::Red;
 
-// 			DrawDebugCapsule(GetWorld(), GetActorLocation(), 125.f, Radius, FRotationMatrix::MakeFromZ(OutHitResult.ImpactNormal).ToQuat(), DrawColor, false, 5.f);
+			// 			DrawDebugCapsule(GetWorld(), GetActorLocation(), 125.f, Radius, FRotationMatrix::MakeFromZ(OutHitResult.ImpactNormal).ToQuat(), DrawColor, false, 5.f);
 
-// #endif
+			// #endif
 		}
 	}
 }

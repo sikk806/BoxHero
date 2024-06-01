@@ -69,7 +69,8 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Skill)
-	AActor *SkillActor;
+	//AActor *SkillActor;
+	TObjectPtr<class ADSCharacterSkill> SkillActor;
 
 	// For QuickSlot Skill
 protected:

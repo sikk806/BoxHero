@@ -5,6 +5,7 @@
 #include "AI/DSMidBossAIController.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "DSCharacterMidBoss.h"
 
@@ -77,6 +78,8 @@ ADSCharacterMidBoss::ADSCharacterMidBoss()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	AIAttackRange = 0.f;
+
+	EnemyName = TEXT("Ancient Golem");
 }
 
 void ADSCharacterMidBoss::BeginPlay()
@@ -154,3 +157,4 @@ void ADSCharacterMidBoss::NotifyActionEnd()
 {
 	OnAttackFinished.ExecuteIfBound();
 }
+

@@ -64,8 +64,6 @@ void ARightHandAttack::Detach()
     SphereComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
     DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 
-    GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Detach")));
-
     FVector LaunchDirection = GetActorForwardVector() * 1000;
     ProjectileMovement->Velocity = LaunchDirection;
     ProjectileMovement->Activate();

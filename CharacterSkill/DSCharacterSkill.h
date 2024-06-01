@@ -23,6 +23,13 @@ public:
 	FORCEINLINE void SetMana(float Mana) { UseMana = Mana; }
 	FORCEINLINE float GetMana() { return UseMana; }
 
+	// Skill Owner
+public:
+	void SetOwnerController(AController* NewOwner);
+
+protected:
+	TObjectPtr<class AController> OwnerController;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Projectile", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UProjectileMovementComponent> ProjectileMovement;

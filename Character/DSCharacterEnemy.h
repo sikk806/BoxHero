@@ -18,6 +18,8 @@ class DARKSORCERY_API ADSCharacterEnemy : public ADSCharacterBase
 public:
 	ADSCharacterEnemy();
 
+	FName EnemyName;
+
 private:
 	void AttackBegin();
 	void AttackEnd(UAnimMontage *TargetMontage, bool IsProperlyEnded);

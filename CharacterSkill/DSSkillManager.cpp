@@ -2,6 +2,7 @@
 
 #include "CharacterSkill/DSSkillManager.h"
 
+#include "CharacterSkill/DSCharacterSkill.h"
 #include "CharacterSkill/DSCharacterSkillComponent.h"
 #include "CharacterSkill/DSSkillFactory.h"
 #include "GameData/DSGameSingleton.h"
@@ -15,7 +16,7 @@ UDSSkillManager::UDSSkillManager()
 
 	bWantsInitializeComponent = true;
 
-	for(int i = 0; i < 3; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		QuickSkills.Add(FQuickSlotSkill());
 		QuickSkillName.Add(FName(""));
@@ -38,7 +39,6 @@ void UDSSkillManager::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 	{
 		SkillActor->SetActorLocation(GetOwner()->GetActorLocation());
 	}
-
 }
 
 void UDSSkillManager::SetMp(float NewMp)
@@ -50,10 +50,11 @@ void UDSSkillManager::SetMp(float NewMp)
 void UDSSkillManager::ActivateSkill(FVector PlayerLocation, FRotator PlayerRotation, int SkillNum)
 {
 	FName SkillName = QuickSkillName[SkillNum];
-	ADSCharacterSkill* Skill = DSSkillFactory::CreateSkill(GetWorld(), SkillName, PlayerLocation, PlayerRotation);
-	if(Skill)
+	ADSCharacterSkill *Skill = DSSkillFactory::CreateSkill(GetWorld(), SkillName, PlayerLocation, PlayerRotation);
+	if (Skill)
 	{
 		SkillActor = Skill;
+		SkillActor->SetOwnerController(GetOwner()->GetInstigatorController());
 		SkillActor->OnDestroyed.AddDynamic(this, &UDSSkillManager::DeActivateSkill);
 	}
 }
@@ -71,7 +72,6 @@ void UDSSkillManager::AddQuickSlot(FName NewSkillName, int SlotNum)
 	FQuickSlotSkill SettingSkill(NewSkillName, Skill.Mana, Skill.Damage, Skill.CoolTime);
 	QuickSkills[SlotNum] = SettingSkill;
 	QuickCoolTime[SlotNum] = Skill.CoolTime;
-	
 }
 
 void UDSSkillManager::RemoveQuickSlot(int SlotNum)
@@ -79,5 +79,4 @@ void UDSSkillManager::RemoveQuickSlot(int SlotNum)
 	QuickSkillName[SlotNum] = "";
 
 	QuickSkills[SlotNum] = FQuickSlotSkill();
-	
 }

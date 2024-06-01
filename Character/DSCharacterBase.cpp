@@ -93,6 +93,7 @@ void ADSCharacterBase::SetupPlayerInputComponent(UInputComponent *PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
+// Get AttackDamage Each Character. Need to add Parameter.
 void ADSCharacterBase::AttackCheck(AActor *OtherActor, FHitResult &HitResult)
 {
 	FCollisionQueryParams Params(SCENE_QUERY_STAT(Attack), false, this);
@@ -107,6 +108,10 @@ float ADSCharacterBase::TakeDamage(float DamageAmount, FDamageEvent const &Damag
 {
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("TakeDamage - Base")));
+	}
 	Stat->ApplyDamage(DamageAmount);
 
 	return DamageAmount;

@@ -2,6 +2,7 @@
 
 #include "UI/DSHUDWidget.h"
 #include "Interface/DSCharacterHUDInterface.h"
+#include "UI/DSEnemyHpBar.h"
 #include "UI/DSHpBarWidget.h"
 #include "UI/DSMpBarWidget.h"
 #include "UI/DSSlotWidget.h"
@@ -17,6 +18,9 @@ UDSHUDWidget::UDSHUDWidget(const FObjectInitializer &ObjectInitializer) : Super(
 void UDSHUDWidget::NativeConstruct()
 {
     Super::NativeConstruct();
+
+    EnemyHpBar = Cast<UDSEnemyHpBar>(GetWidgetFromName(TEXT("WidgetEnemyHpBar")));
+    ensure(EnemyHpBar);
 
     HpBar = Cast<UDSHpBarWidget>(GetWidgetFromName(TEXT("WidgetHpBar")));
     ensure(HpBar);
@@ -48,6 +52,8 @@ void UDSHUDWidget::SettingHUD(float SetMaxHp, float SetMaxMp)
     Skill->Init(OwningPlayer);
     Skill->SetVisibility(ESlateVisibility::Hidden);
 
+    EnemyHpBar->SetVisibility(ESlateVisibility::Hidden);
+
     QuickSkill->Init(OwningPlayer);
 }
 
@@ -60,6 +66,27 @@ void UDSHUDWidget::UpdateHpBar(float NewCurrentHp)
 void UDSHUDWidget::UpdateMpBar(float NewCurrentMp)
 {
     MpBar->UpdateMpBar(NewCurrentMp);
+}
+
+void UDSHUDWidget::SetEnemyHpBarVisibility()
+{
+    EnemyHpBar->SetVisibility(ESlateVisibility::Visible);
+    // Need To Set Timer - Hidden
+}
+
+void UDSHUDWidget::SetEnemyMaxHp(float NewMaxHp)
+{
+    EnemyHpBar->SetMaxHp(NewMaxHp);
+}
+
+void UDSHUDWidget::UpdateEnemyHp(float NewCurrentHp)
+{
+    EnemyHpBar->UpdateHpBar(NewCurrentHp);
+}
+
+void UDSHUDWidget::SetEnemyName(FName Name)
+{
+    EnemyHpBar->SetEnemyText(Name);
 }
 
 bool UDSHUDWidget::SetSkillWidgetVisibility()

@@ -2,6 +2,7 @@
 
 
 #include "CharacterSkill/DSCharacterSkill.h"
+#include "Character/DSCharacterPlayer.h"
 #include "DSCharacterSkill.h"
 
 // Sets default values
@@ -17,6 +18,11 @@ void ADSCharacterSkill::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void ADSCharacterSkill::SetOwnerController(AController* NewOwner)
+{
+	OwnerController = NewOwner;
 }
 
 void ADSCharacterSkill::DestroyActor()

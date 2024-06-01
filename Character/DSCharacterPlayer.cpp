@@ -429,6 +429,19 @@ UActorComponent *ADSCharacterPlayer::GetSkillManager()
     }
 }
 
+UDSHUDWidget *ADSCharacterPlayer::GetHUDWidget()
+{
+    UDSHUDWidget *CharacterWidget = Cast<UDSHUDWidget>(HUDWidget);
+    if(CharacterWidget)
+    {
+        return CharacterWidget;
+    }
+    else
+    {
+        return nullptr;
+    }
+}
+
 void ADSCharacterPlayer::SetCharacterWidget(UDSUserWidget *InUserWidget)
 {
     Super::SetCharacterWidget(InUserWidget);

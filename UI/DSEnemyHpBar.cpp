@@ -2,4 +2,40 @@
 
 
 #include "UI/DSEnemyHpBar.h"
+#include "UI/DSHpBarWidget.h"
+#include "DSEnemyHpBar.h"
+#include "Components/TextBlock.h"
 
+
+
+UDSEnemyHpBar::UDSEnemyHpBar(const FObjectInitializer &ObjectInitializer)
+{
+    MaxHp = -1.f;
+}
+
+void UDSEnemyHpBar::NativeConstruct()
+{
+    Super::NativeConstruct();
+
+    EnemyHpWidget = Cast<UDSHpBarWidget>(GetWidgetFromName(TEXT("HpBar")));
+    ensure(EnemyHpWidget);
+
+    EnemyName = Cast<UTextBlock>(GetWidgetFromName(TEXT("EnemyName")));
+    ensure(EnemyName);
+}
+
+void UDSEnemyHpBar::SetMaxHp(float NewMaxHp)
+{
+    EnemyHpWidget->SetMaxHp(NewMaxHp);
+}
+
+void UDSEnemyHpBar::UpdateHpBar(float NewCurrentHp)
+{
+    EnemyHpWidget->UpdateHpBar(NewCurrentHp);
+
+}
+
+void UDSEnemyHpBar::SetEnemyText(FName Name)
+{
+    EnemyName->SetText(FText::FromName(Name));
+}

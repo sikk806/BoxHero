@@ -26,7 +26,7 @@ public:
 
 	// Character Stat
 public:
-	FORCEINLINE void SetPlayer(ADSCharacterPlayer* NewPlayer) { OwningPlayer = NewPlayer; }
+	FORCEINLINE void SetPlayer(ADSCharacterPlayer *NewPlayer) { OwningPlayer = NewPlayer; }
 	void UpdateHpBar(float NewCurrentHp);
 	void UpdateMpBar(float NewCurrentMp);
 
@@ -45,10 +45,22 @@ protected:
 	float MaxHp;
 	float MaxMp;
 
+	// Boss Hp
+private:
+	UPROPERTY()
+	TObjectPtr<class UDSEnemyHpBar> EnemyHpBar;
+
+public:
+	void SetEnemyHpBarVisibility();
+	void SetEnemyMaxHp(float NewMaxHp);
+	void UpdateEnemyHp(float NewCurrentHp);
+	void SetEnemyName(FName Name);
+
+
 	// Character Skill
 public:
 	bool SetSkillWidgetVisibility();
-	
+
 protected:
 	UPROPERTY()
 	TObjectPtr<class UDSSkillWidget> Skill;
@@ -56,5 +68,5 @@ protected:
 	UPROPERTY()
 	TObjectPtr<class UDSQuickSkillWidget> QuickSkill;
 
-	virtual FReply NativeOnPreviewKeyDown(const FGeometry& InGeometry, const FKeyEvent& InKeyEvent) override;
+	virtual FReply NativeOnPreviewKeyDown(const FGeometry &InGeometry, const FKeyEvent &InKeyEvent) override;
 };

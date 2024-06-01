@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Character/DSCharacterEnemy.h"
+#include "Character/DSCharacterNamed.h"
 #include "DSCharacterMidBoss.generated.h"
 
 /**
  *
  */
 UCLASS()
-class DARKSORCERY_API ADSCharacterMidBoss : public ADSCharacterEnemy, public IDSEnemyAIInterface
+class DARKSORCERY_API ADSCharacterMidBoss : public ADSCharacterNamed, public IDSEnemyAIInterface
 {
 	GENERATED_BODY()
 

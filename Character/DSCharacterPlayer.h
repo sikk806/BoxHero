@@ -141,6 +141,7 @@ protected:
 	// UI Section
 public:
 	UActorComponent* GetSkillManager();
+	UDSHUDWidget* GetHUDWidget() override;
 	
 protected:
 	UPROPERTY()
