@@ -45,6 +45,7 @@ void UDSMidBossSkillManager::ActivateSkill(FVector MonsterLocation, FRotator Mon
             Skill->AttachToComponent(Character->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, FName("Laser"));
             Skill->SetActorRelativeLocation(FVector(0.f, 0.f, 0.f));
             Skill->SetActorRelativeRotation(FRotator(0.f, 0.f, 0.f));
+            SkillActor = Skill;
         }
     }
     else

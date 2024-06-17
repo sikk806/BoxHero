@@ -95,6 +95,11 @@ void ADSCharacterMidBoss::BeginPlay()
 void ADSCharacterMidBoss::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	UAnimInstance *AnimInstance = GetMesh()->GetAnimInstance();
+
+	if(AnimInstance->GetCurrentActiveMontage())
+		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Montage Name : %f"), AnimInstance->Montage_GetPosition(AnimInstance->GetCurrentActiveMontage())));
 }
 
 float ADSCharacterMidBoss::GetAIPatrolRadius()
@@ -148,8 +153,7 @@ void ADSCharacterMidBoss::AttackBegin()
 
 void ADSCharacterMidBoss::AttackEnd(UAnimMontage *TargetMontage, bool IsProperlyEnded)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("AttackEnd")));
-	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("AttackEnd")));
 
 	NotifyActionEnd();
 }
@@ -161,12 +165,18 @@ void ADSCharacterMidBoss::NotifyActionEnd()
 
 void ADSCharacterMidBoss::CastDelay()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Enter Cast Delay")));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Enter Cast Delay")));
 	UAnimInstance *AnimInstance = GetMesh()->GetAnimInstance();
+	//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Montage Name : %s"), *AnimInstance->GetCurrentActiveMontage()->GetName()));
 	if(AnimInstance)
 	{
-		AnimInstance->Montage_Pause(AnimInstance->GetCurrentActiveMontage());
+		AnimInstance->Montage_Pause(SkillMontage);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Pause Montage: ")));
 		GetWorld()->GetTimerManager().SetTimer(CastTimer, this, &ADSCharacterMidBoss::ResumeMontage, 3.f, false);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("No Playing Montage")));
 	}
 }
 
