@@ -25,7 +25,7 @@
 ADSCharacterPlayer::ADSCharacterPlayer()
 {
     // Debug
-    //GetCapsuleComponent()->bHiddenInGame = false;
+    // GetCapsuleComponent()->bHiddenInGame = false;
 
     // Camera
     CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
@@ -184,6 +184,8 @@ void ADSCharacterPlayer::SetupPlayerInputComponent(UInputComponent *PlayerInputC
 void ADSCharacterPlayer::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+
+    
 }
 
 void ADSCharacterPlayer::Move(const FInputActionValue &Value)
@@ -225,7 +227,7 @@ void ADSCharacterPlayer::Look(const FInputActionValue &Value)
 
 void ADSCharacterPlayer::Attack()
 {
-    if (!bWidgetOn)
+    if (!bWidgetOn && CanJump())
     {
         ProcessComboCommand();
     }
@@ -347,40 +349,43 @@ void ADSCharacterPlayer::SettingWeaponCollision()
 
 void ADSCharacterPlayer::ActivateSkill()
 {
-    ADSPlayerController *PlayerController = Cast<ADSPlayerController>(Controller);
-    FKey PressedKey;
-    if (PlayerController)
+    if (CanJump())
     {
-        PressedKey = PlayerController->GetLastKeyPressed();
-    }
-    int SkillNum = -1;
-    if (PressedKey.ToString() == "Q")
-    {
-        SkillNum = 0;
-    }
-    else if (PressedKey.ToString() == "E")
-    {
-        SkillNum = 1;
-    }
-    else if (PressedKey.ToString() == "R")
-    {
-        SkillNum = 2;
-    }
-
-    FName SkillName = SkillManager->GetActivateSkillName(SkillNum);
-    FQuickSlotSkill Skill = SkillManager->GetActivateSkill(SkillNum);
-    if (SkillName != "")
-    {
-        float UseMana = Skill.Mana;
-        if (UseMana != 0.f && SkillManager->GetNowMp() >= UseMana)
+        ADSPlayerController *PlayerController = Cast<ADSPlayerController>(Controller);
+        FKey PressedKey;
+        if (PlayerController)
         {
-            SkillManager->SetMp(UseMana);
-            SkillManager->ActivateSkill(GetActorLocation(), GetActorRotation(), SkillNum);
-            UAnimInstance *AnimInstance = GetMesh()->GetAnimInstance();
-            if (AnimInstance && SkillMontage)
+            PressedKey = PlayerController->GetLastKeyPressed();
+        }
+        int SkillNum = -1;
+        if (PressedKey.ToString() == "Q")
+        {
+            SkillNum = 0;
+        }
+        else if (PressedKey.ToString() == "E")
+        {
+            SkillNum = 1;
+        }
+        else if (PressedKey.ToString() == "R")
+        {
+            SkillNum = 2;
+        }
+
+        FName SkillName = SkillManager->GetActivateSkillName(SkillNum);
+        FQuickSlotSkill Skill = SkillManager->GetActivateSkill(SkillNum);
+        if (SkillName != "")
+        {
+            float UseMana = Skill.Mana;
+            if (UseMana != 0.f && SkillManager->GetNowMp() >= UseMana)
             {
-                AnimInstance->Montage_Play(SkillMontage, 1.f);
-                AnimInstance->Montage_JumpToSection(SkillName, SkillMontage);
+                SkillManager->SetMp(UseMana);
+                SkillManager->ActivateSkill(GetActorLocation(), GetActorRotation(), SkillNum);
+                UAnimInstance *AnimInstance = GetMesh()->GetAnimInstance();
+                if (AnimInstance && SkillMontage)
+                {
+                    AnimInstance->Montage_Play(SkillMontage, 1.f);
+                    AnimInstance->Montage_JumpToSection(SkillName, SkillMontage);
+                }
             }
         }
     }
@@ -432,7 +437,7 @@ UActorComponent *ADSCharacterPlayer::GetSkillManager()
 UDSHUDWidget *ADSCharacterPlayer::GetHUDWidget()
 {
     UDSHUDWidget *CharacterWidget = Cast<UDSHUDWidget>(HUDWidget);
-    if(CharacterWidget)
+    if (CharacterWidget)
     {
         return CharacterWidget;
     }

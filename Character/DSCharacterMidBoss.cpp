@@ -12,7 +12,7 @@
 ADSCharacterMidBoss::ADSCharacterMidBoss()
 {
 	// Movement
-	GetCharacterMovement()->MaxWalkSpeed = 600.f;
+	GetCharacterMovement()->MaxWalkSpeed = 800.f;
 
 	// Capsule
 	GetCapsuleComponent()->InitCapsuleSize(100.f, 250.f);
@@ -148,6 +148,7 @@ void ADSCharacterMidBoss::AttackBegin()
 
 void ADSCharacterMidBoss::AttackEnd(UAnimMontage *TargetMontage, bool IsProperlyEnded)
 {
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("AttackEnd")));
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
 
 	NotifyActionEnd();
@@ -158,3 +159,22 @@ void ADSCharacterMidBoss::NotifyActionEnd()
 	OnAttackFinished.ExecuteIfBound();
 }
 
+void ADSCharacterMidBoss::CastDelay()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Enter Cast Delay")));
+	UAnimInstance *AnimInstance = GetMesh()->GetAnimInstance();
+	if(AnimInstance)
+	{
+		AnimInstance->Montage_Pause(AnimInstance->GetCurrentActiveMontage());
+		GetWorld()->GetTimerManager().SetTimer(CastTimer, this, &ADSCharacterMidBoss::ResumeMontage, 3.f, false);
+	}
+}
+
+void ADSCharacterMidBoss::ResumeMontage()
+{
+	UAnimInstance *AnimInstance = GetMesh()->GetAnimInstance();
+	if(AnimInstance)
+	{
+		AnimInstance->Montage_Resume(AnimInstance->GetCurrentActiveMontage());
+	}
+}

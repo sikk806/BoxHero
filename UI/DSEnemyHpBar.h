@@ -35,5 +35,11 @@ protected:
 	TObjectPtr<class UTextBlock> EnemyName;
 
 	UPROPERTY()
+	TObjectPtr<class UTextBlock> EnemyHpText;
+
+	UPROPERTY()
 	float MaxHp;
+
+	UPROPERTY()
+	float NowHp;
 };

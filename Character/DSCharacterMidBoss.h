@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Character/DSCharacterNamed.h"
+#include "Interface/DSCastDelayInterface.h"
 #include "DSCharacterMidBoss.generated.h"
 
 /**
  *
  */
 UCLASS()
-class DARKSORCERY_API ADSCharacterMidBoss : public ADSCharacterNamed, public IDSEnemyAIInterface
+class DARKSORCERY_API ADSCharacterMidBoss : public ADSCharacterNamed, public IDSEnemyAIInterface, public IDSCastDelayInterface
 {
 	GENERATED_BODY()
 
@@ -57,4 +58,9 @@ private:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Skill, Meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<class UAnimMontage> SkillMontage;
+
+	// Attack Anim
+	virtual void CastDelay() override;
+	void ResumeMontage();
+	FTimerHandle CastTimer;
 };

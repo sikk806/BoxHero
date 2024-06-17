@@ -11,8 +11,10 @@
 
 DECLARE_MULTICAST_DELEGATE_TwoParams(FOnHitDelegate, AActor * /* Actor Of HittedActor */, FHitResult & /* Actor Hit Result */);
 
+
+// Deleted CastDelayInterface... If it makes Error, need to ass IDSCastDelayInterface and function.
 UCLASS()
-class DARKSORCERY_API ADSCharacterBase : public ACharacter, public IDSCastDelayInterface, public IDSCharacterWidgetInterface, public IDSPauseMontageInterface
+class DARKSORCERY_API ADSCharacterBase : public ACharacter, public IDSCharacterWidgetInterface, public IDSPauseMontageInterface
 {
 	GENERATED_BODY()
 
@@ -60,8 +62,6 @@ protected:
 	virtual void PauseMontage() override;
 
 	float DeadEventTime = 5.f;
-
-	virtual void CastDelay() override;
 
 	// Item Section
 protected:

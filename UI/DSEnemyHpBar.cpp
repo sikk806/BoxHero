@@ -22,20 +22,29 @@ void UDSEnemyHpBar::NativeConstruct()
 
     EnemyName = Cast<UTextBlock>(GetWidgetFromName(TEXT("EnemyName")));
     ensure(EnemyName);
+
+    EnemyHpText = Cast<UTextBlock>(GetWidgetFromName(TEXT("EnemyHpText")));
+    ensure(EnemyHpText);
 }
 
 void UDSEnemyHpBar::SetMaxHp(float NewMaxHp)
 {
     EnemyHpWidget->SetMaxHp(NewMaxHp);
+    MaxHp = NewMaxHp;
 }
 
 void UDSEnemyHpBar::UpdateHpBar(float NewCurrentHp)
 {
     EnemyHpWidget->UpdateHpBar(NewCurrentHp);
+    NowHp = NewCurrentHp;
 
 }
 
 void UDSEnemyHpBar::SetEnemyText(FName Name)
 {
     EnemyName->SetText(FText::FromName(Name));
+    FString HpInfo = FString::SanitizeFloat(MaxHp, 0);
+    HpInfo += " / ";
+    HpInfo += FString::SanitizeFloat(NowHp, 0);
+    EnemyHpText->SetText(FText::FromString(HpInfo));
 }

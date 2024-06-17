@@ -7,7 +7,7 @@
 // Sets default values for this component's properties
 UDSCharacterStatComponent::UDSCharacterStatComponent()
 {
-	MaxHp = 90.f;
+	MaxHp = 300.f;
 	SetHp(MaxHp);
 
 	bWantsInitializeComponent = true;

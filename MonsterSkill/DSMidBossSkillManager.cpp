@@ -11,6 +11,9 @@ UDSMidBossSkillManager::UDSMidBossSkillManager()
 {
     // 0. RightHandAttack
     MonsterSkillSet.Add(FSkillAttackInfo(0, FName("RightHandAttack"), 1000.f));
+
+    // 1. Laser
+    MonsterSkillSet.Add(FSkillAttackInfo(1, FName("Laser"), 1000.f));
 }
 
 void UDSMidBossSkillManager::BeginPlay()
@@ -20,9 +23,11 @@ void UDSMidBossSkillManager::BeginPlay()
 
 void UDSMidBossSkillManager::SettingNextSkill()
 {
+    GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Now Skill : %s"), *NextSkillName.ToString()));
     int32 RandomSkillNumber = FMath::RandRange(0, MonsterSkillSet.Num() - 1);
     NextSkillName = MonsterSkillSet[RandomSkillNumber].SkillName;
     NextSkillRange = MonsterSkillSet[RandomSkillNumber].AttackRangeWithRadius;
+    GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Next Skill : %s"), *NextSkillName.ToString()));
 }
 
 void UDSMidBossSkillManager::ActivateSkill(FVector MonsterLocation, FRotator MonsterRotation)
@@ -31,13 +36,26 @@ void UDSMidBossSkillManager::ActivateSkill(FVector MonsterLocation, FRotator Mon
     {
         CopySkill(NextSkillName, MonsterLocation, MonsterRotation, 4);
     }
-    else
+    else if (NextSkillName == "Laser")
     {
         ADSCharacterSkill *Skill = DSMonsterSkillFactory::CreateSkill(GetWorld(), NextSkillName, MonsterLocation, MonsterRotation);
-        SkillActor = Skill;
+        ACharacter *Character = Cast<ACharacter>(GetOwner());
+        if (Character)
+        {
+            Skill->AttachToComponent(Character->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, FName("Laser"));
+            Skill->SetActorRelativeLocation(FVector(0.f, 0.f, 0.f));
+            Skill->SetActorRelativeRotation(FRotator(0.f, 0.f, 0.f));
+        }
     }
-    GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Check")));
-    SkillActor->OnDestroyed.AddDynamic(this, &UDSMidBossSkillManager::DeActivateSkill);
+    else
+    {
+        // ADSCharacterSkill *Skill = DSMonsterSkillFactory::CreateSkill(GetWorld(), NextSkillName, MonsterLocation, MonsterRotation);
+        // SkillActor = Skill;
+    }
+    if (SkillActor)
+    {
+        SkillActor->OnDestroyed.AddDynamic(this, &UDSMidBossSkillManager::DeActivateSkill);
+    }
 }
 
 void UDSMidBossSkillManager::DeActivateSkill(AActor *DestroySkill)
@@ -51,14 +69,12 @@ void UDSMidBossSkillManager::CopySkill(FName SkillName, FVector MonsterLocation,
     {
         for (int i = 0; i < Copies; i++)
         {
-            GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Check ; %d"), i));
             FVector NewLocation = MonsterLocation + FVector(i * 100.f, 0.f, 0.f);
-            FRotator NewRotaion = MonsterRotation + FRotator(0.f, -i * 30.f + 10.f, 0.f);
+            FRotator NewRotaion = MonsterRotation + FRotator(0.f, -i * 30.f + 40.f, 0.f);
             ADSCharacterSkill *Skill = DSMonsterSkillFactory::CreateSkill(GetWorld(), SkillName, NewLocation, NewRotaion);
             ACharacter *Character = Cast<ACharacter>(GetOwner());
             if (Character)
             {
-                GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Check")));
                 Skill->AttachToComponent(Character->GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, FName("RightHandAttack"));
                 Skill->SetActorRelativeLocation(FVector(0.f, 0.f, 0.f));
                 Skill->SetActorRelativeRotation(FRotator(0.f, 0.f, 0.f));

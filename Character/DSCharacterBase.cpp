@@ -29,7 +29,7 @@ ADSCharacterBase::ADSCharacterBase()
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 500.f, 0.f);
 	GetCharacterMovement()->JumpZVelocity = 700.f;
 	GetCharacterMovement()->AirControl = 0.35f;
-	GetCharacterMovement()->MaxWalkSpeed = 500.f;
+	GetCharacterMovement()->MaxWalkSpeed = 650.f;
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.f;
 
@@ -163,19 +163,6 @@ void ADSCharacterBase::PauseMontage()
 																							{ GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, TEXT("Pause Montage"));
 																								AnimInstance->Montage_Resume(MontageInstance); }),
 										   2.f, false);
-}
-
-void ADSCharacterBase::CastDelay()
-{
-	EMovementMode EMM = GetCharacterMovement()->MovementMode;
-	if (EMM == EMovementMode::MOVE_Walking)
-	{
-		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_None);
-	}
-	else if (EMM == EMovementMode::MOVE_None)
-	{
-		GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking);
-	}
 }
 
 void ADSCharacterBase::SetCharacterWidget(UDSUserWidget *InUserWidget)
