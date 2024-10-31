@@ -63,11 +63,3 @@ void ADSCharacterTrashMob::AttackByAI()
 
 // 
 ```
-___
-## 구현 예정
-__이후 개발 목표 : 2024 - 06 - 13 데모 개발 완료.__
-1. Quick Slot - Item (Potion)
-2. Character(Player, Enemy) Rest Skills
-3. Boss Hidden Pattern
-4. Save / Load
-5. UI - Main, Option, Boss Select
